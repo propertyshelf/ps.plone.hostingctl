@@ -1,0 +1,16 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="propertyshelf.hosting.plone">
+
+    <include package="plone.app.controlpanel" />
+
+    <browser:page
+        name="hosting-settings" 
+        class=".controlpanel.HostingSettingsView"
+        layer=".interfaces.IHostingSpecific"
+        permission="plone.app.controlpanel.Site"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        />
+
+</configure>
