@@ -1,12 +1,21 @@
+# -*- coding: utf-8 -*-
+
+"""
+Integration tests for the registry of propertyshelf.plone.hosting
+"""
+
+# python imports
 import unittest2 as unittest
 
+# plone imports
 from Products.CMFCore.utils import getToolByName
 
+# local imports
 from propertyshelf.plone.hosting.testing import\
     PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
 
 
-class TestExample(unittest.TestCase):
+class TestSetup(unittest.TestCase):
 
     layer = PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
     

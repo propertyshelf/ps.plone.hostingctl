@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
+"""Setup of test layers for propertyshelf.plone.hosting"""
+
+# plone imports
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import PLONE_FIXTURE
-
-from zope.configuration import xmlconfig
 
 
 class PropertyshelfPloneHostingLayer(PloneSandboxLayer):
@@ -13,11 +16,7 @@ class PropertyshelfPloneHostingLayer(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # Load ZCML
         import propertyshelf.plone.hosting
-        xmlconfig.file(
-            'configure.zcml',
-            propertyshelf.plone.hosting,
-            context=configurationContext
-        )
+        self.loadZCML(package=propertyshelf.plone.hosting)
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'propertyshelf.plone.hosting:default')

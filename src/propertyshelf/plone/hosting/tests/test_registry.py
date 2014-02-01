@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+Integration tests for the registry of propertyshelf.plone.hosting
+"""
+
 # local imports
 from propertyshelf.plone.hosting.testing import \
     PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
@@ -15,7 +19,7 @@ from plone.registry.interfaces import IRegistry
 from zope.component import getUtility
 
 
-class TestExample(unittest.TestCase):
+class TestRegistry(unittest.TestCase):
     """ Tests for checking the registry """
 
     layer = PROPERTYSHELF_PLONE_HOSTING_INTEGRATION

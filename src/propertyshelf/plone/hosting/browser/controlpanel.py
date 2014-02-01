@@ -6,7 +6,7 @@ from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
 
 # python imports
 from chef import ChefAPI
-from chef import DataBag
+from chef import Client
 from logging import getLogger
 
 # plone imports
@@ -57,7 +57,7 @@ class HostingSettingsEditForm(RegistryEditForm):
                 url=chef_server_url,
                 key=client_key,
                 client=node_name)
-            DataBag.list(api=chef_api)
+            Client.list(api=chef_api)
         except:
             api.portal.show_message(
                 "Chef API authentication: FAILURE",

@@ -1,1 +1,1 @@
-# look here
+""" Tests for propertyshelf.plone.hosting """
