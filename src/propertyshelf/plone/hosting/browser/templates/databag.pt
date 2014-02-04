@@ -1,0 +1,14 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      lang="en">
+
+    <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
+
+    <tal:condition condition="view/available">
+        <h3 tal:condition="view/available">Data Bag List</h3>
+        <p>The view is available</p>
+
+    </tal:condition>
+
+</html>

@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 """Form field definitions for the registry configlet."""
 
-# local imports
-from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
-
 # python imports
-from chef import ChefAPI
-from chef import Client
 from logging import getLogger
 
 # plone imports
@@ -16,6 +11,11 @@ from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
 
 # zope imports
 from z3c.form import field
+from zope.component import queryUtility
+
+#local imports
+from propertyshelf.plone.hosting.interfaces import IChefTool
+from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
 
 logger = getLogger('propertyshelf.plone.hosting')
 
@@ -52,20 +52,20 @@ class HostingSettingsEditForm(RegistryEditForm):
         chef_server_url = data.get('chef_server_url')
         client_key = data.get('client_key')
 
-        try:
-            chef_api = ChefAPI(
-                url=chef_server_url,
-                key=client_key,
-                client=node_name)
-            Client.list(api=chef_api)
-        except:
-            api.portal.show_message(
-                "Chef API authentication: FAILURE",
-                request=self.request)
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is not None:
+            chef_tool.clear_settings()
+            chef_tool.setup(node_name, chef_server_url, client_key)
+            if chef_tool.authenticated:
+                api.portal.show_message(
+                    "Chef API authentication: SUCCESS",
+                    request=self.request)
+            else:
+                api.portal.show_message(
+                    "Chef API authentication: FAILURE",
+                    request=self.request)
         else:
-            api.portal.show_message(
-                "Chef API authentication: SUCCESS",
-                request=self.request)
+            logger.warning("Chef utility is not correctly registered")
 
         return changes
 

@@ -13,4 +13,12 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <browser:page
+        name="databag-view" 
+        class=".views.DataBagView"
+        layer=".interfaces.IHostingSpecific"
+        permission="cmf.ManagePortal"
+        for="*"
+        />
+
 </configure>

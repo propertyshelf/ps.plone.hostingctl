@@ -4,11 +4,6 @@
 Integration tests for the registry of propertyshelf.plone.hosting
 """
 
-# local imports
-from propertyshelf.plone.hosting.testing import \
-    PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
-from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
-
 # python imports
 import unittest2 as unittest
 
@@ -17,6 +12,11 @@ from plone.registry.interfaces import IRegistry
 
 # zope imports
 from zope.component import getUtility
+
+# local imports
+from propertyshelf.plone.hosting.testing import \
+    PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
+from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
 
 
 class TestRegistry(unittest.TestCase):

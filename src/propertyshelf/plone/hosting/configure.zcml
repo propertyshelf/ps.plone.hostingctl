@@ -5,23 +5,29 @@
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="propertyshelf.plone.hosting">
 
-  <five:registerPackage package="." initialize=".initialize" />
-  <include package=".browser" />
-
-  <genericsetup:registerProfile
-      name="default"
-      title="propertyshelf.plone.hosting"
-      directory="profiles/default"
-      description="Installs the propertyshelf.plone.hosting package"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
-
-  <genericsetup:registerProfile
-      name="uninstall"
-      title="propertyshelf.plone.hosting-uninstall"
-      directory="profiles/uninstall"
-      description="Uninstalls the propertyshelf.plone.hosting package"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      />
+    <five:registerPackage package="." initialize=".initialize" />
+    <include package=".browser" />
   
+    <genericsetup:registerProfile
+        name="default"
+        title="propertyshelf.plone.hosting"
+        directory="profiles/default"
+        description="Installs the propertyshelf.plone.hosting package"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+  
+    <genericsetup:registerProfile
+        name="uninstall"
+        title="propertyshelf.plone.hosting-uninstall"
+        directory="profiles/uninstall"
+        description="Uninstalls the propertyshelf.plone.hosting package"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+  
+    <utility
+        factory=".chef_tool.ChefTool"
+        provides=".interfaces.IChefTool"
+        permission="zope.Public"
+        />
+
 </configure>
