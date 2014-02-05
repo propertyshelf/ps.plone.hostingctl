@@ -4,32 +4,40 @@
 
 # zope imports
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from Products.Five.browser import BrowserView
 from zope.component import queryUtility
 
+# plone imports
+from plone.app.layout.viewlets.common import ViewletBase
+
 # local imports
+from propertyshelf.plone.hosting.interfaces import MessageFactory as _
 from propertyshelf.plone.hosting.interfaces import IChefTool
 
 
-class DataBagView(BrowserView):
+class DataBagViewlet(ViewletBase):
     """
         This view shows the data bags available for the current
         authenticated session of the Chef API
     """
 
     index = ViewPageTemplateFile("templates/databag.pt")
+    label = _(u'Available Data Bag')
 
-    def __init__(self, context, request):
-        super(DataBagView, self).__init__(context, request)
-
+    def update(self):
         self._available = False
-        chef_api = queryUtility(IChefTool)
-        if chef_api is not None:
-            self._available = chef_api.authenticated
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is None:
+            return
 
-    def __call__(self):
-        return self.index()
+        self._available = chef_tool.authenticated
+        self._databags = chef_tool.get_databags()
 
     @property
     def available(self):
         return self._available
+
+    def get_databag_names(self):
+        return self._databags
+
+    def get_num_databags(self):
+        return len(self._databags)

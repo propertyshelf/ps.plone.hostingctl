@@ -13,11 +13,12 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
-    <browser:page
+    <browser:viewlet
         name="databag-view" 
-        class=".views.DataBagView"
+        class=".viewlets.DataBagViewlet"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
         layer=".interfaces.IHostingSpecific"
-        permission="cmf.ManagePortal"
+        permission="zope2.View"
         for="*"
         />
 

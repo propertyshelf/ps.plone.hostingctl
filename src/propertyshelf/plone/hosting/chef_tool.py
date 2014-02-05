@@ -3,6 +3,7 @@
 # python imports
 from chef import ChefAPI
 from chef import Client
+from chef import DataBag
 
 # zope imports
 from persistent import Persistent
@@ -62,3 +63,6 @@ class ChefTool(Persistent):
         self._authenticated = False
         self._api = None
 
+    def get_databags(self):
+        if self._authenticated:
+            return list(DataBag.list(api=self._api))

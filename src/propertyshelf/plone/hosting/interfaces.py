@@ -3,7 +3,12 @@
 """ Interface definitions for propertyshelf.plone.hosting """
 
 # zope imports
+import zope.i18nmessageid
 from zope.interface import Interface
+
+MessageFactory = zope.i18nmessageid.MessageFactory(
+    'propertyshelf.plone.hosting'
+)
 
 
 class IChefTool(Interface):

@@ -6,9 +6,11 @@
     <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
 
     <tal:condition condition="view/available">
-        <h3 tal:condition="view/available">Data Bag List</h3>
-        <p>The view is available</p>
-
+        <h3>Data Bags:</h3>
+        <select size="0"
+            tal:attributes="size view/get_num_databags">
+            <option tal:repeat="databag view/get_databag_names" tal:content="databag">DataBag1</option>
+        </select>
     </tal:condition>
 
 </html>
