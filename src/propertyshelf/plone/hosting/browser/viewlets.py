@@ -10,7 +10,7 @@ from zope.component import queryUtility
 from plone.app.layout.viewlets.common import ViewletBase
 
 # local imports
-from propertyshelf.plone.hosting.interfaces import MessageFactory as _
+from propertyshelf.plone.hosting.i18n import _
 from propertyshelf.plone.hosting.interfaces import IChefTool
 
 

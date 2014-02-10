@@ -14,6 +14,7 @@ from z3c.form import field
 from zope.component import queryUtility
 
 #local imports
+from propertyshelf.plone.hosting.i18n import _
 from propertyshelf.plone.hosting.interfaces import IChefTool
 from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
 
@@ -58,11 +59,11 @@ class HostingSettingsEditForm(RegistryEditForm):
             chef_tool.setup(node_name, chef_server_url, client_key)
             if chef_tool.authenticated:
                 api.portal.show_message(
-                    "Chef API authentication: SUCCESS",
+                    _(u'Chef API authentication: SUCCESS'),
                     request=self.request)
             else:
                 api.portal.show_message(
-                    "Chef API authentication: FAILURE",
+                    _(u'Chef API authentication: FAILURE'),
                     request=self.request)
         else:
             logger.warning("Chef utility is not correctly registered")
@@ -73,5 +74,5 @@ class HostingSettingsEditForm(RegistryEditForm):
 class HostingSettingsView(ControlPanelFormWrapper):
     """ View wrapper for the Registry Edit Form """
 
-    label = u"Hosting Settings"
+    label = _(u'Hosting Settings')
     form = HostingSettingsEditForm
