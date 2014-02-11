@@ -15,7 +15,7 @@ from plone.registry.interfaces import IRegistry
 
 # local imports
 from .interfaces import IChefTool
-from .browser.interfaces import IHostingSettings
+from .views.interfaces import IHostingSettings
 
 
 @implementer(IChefTool)
@@ -23,8 +23,8 @@ class ChefTool(Persistent):
     """ Utility for interaction with Chef API """
 
     def __init__(self):
-        self._authenticated = False
         self._initialized = False
+        self.clear_settings()
 
     @property
     def authenticated(self):
@@ -34,16 +34,28 @@ class ChefTool(Persistent):
 
     def setup_from_registry(self):
         registry = queryUtility(IRegistry)
-        if registry is not None:
-            settings = registry.forInterface(IHostingSettings)
-            self.setup(
-                node_name=getattr(settings, 'node_name', u''),
-                chef_server_url=getattr(settings, 'chef_server_url', u''),
-                client_key=getattr(settings, 'client_key', u'')
-            )
-            self._initialized = True
+        if registry is None:
+            return
+
+        settings = registry.forInterface(IHostingSettings)
+        if settings is None:
+            return
+
+        self.setup(
+            node_name=getattr(settings, 'node_name', u''),
+            chef_server_url=getattr(settings, 'chef_server_url', u''),
+            client_key=getattr(settings, 'client_key', u'')
+        )
+        self._initialized = True
 
     def setup(self, node_name, chef_server_url, client_key):
+        self.clear_settings()
+
+        # must at least check for black client_key because PyChef crashes
+        # without exception on a blank client_key
+        if not node_name or not chef_server_url or not client_key:
+            return
+
         try:
             chef_api = ChefAPI(
                 url=chef_server_url,
@@ -57,9 +69,6 @@ class ChefTool(Persistent):
             self._api = chef_api
 
     def clear_settings(self):
-        self.node_url = None
-        self.chef_server_url = None
-        self.client_key = None
         self._authenticated = False
         self._api = None
 
