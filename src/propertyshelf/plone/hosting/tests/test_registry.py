@@ -16,7 +16,7 @@ from zope.component import getUtility
 # local imports
 from propertyshelf.plone.hosting.testing import \
     PROPERTYSHELF_PLONE_HOSTING_INTEGRATION
-from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
+from propertyshelf.plone.hosting.views.interfaces import IHostingSettings
 
 
 class TestRegistry(unittest.TestCase):

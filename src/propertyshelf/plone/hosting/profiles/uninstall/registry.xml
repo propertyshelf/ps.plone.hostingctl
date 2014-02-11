@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <registry>
-    <records interface="propertyshelf.plone.hosting.browser.interfaces.IHostingSettings"
+    <records interface="propertyshelf.plone.hosting.views.interfaces.IHostingSettings"
         remove="True"
         />
 </registry>

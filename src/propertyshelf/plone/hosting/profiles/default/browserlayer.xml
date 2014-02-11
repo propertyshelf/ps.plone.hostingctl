@@ -2,6 +2,6 @@
 <layers>
   <layer
       name="propertyshelf.plone.hosting" 
-      interface="propertyshelf.plone.hosting.browser.interfaces.IHostingSpecific"
+      interface="propertyshelf.plone.hosting.views.interfaces.IHostingSpecific"
       />
 </layers>

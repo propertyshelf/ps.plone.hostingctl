@@ -16,7 +16,7 @@ from zope.component import queryUtility
 #local imports
 from propertyshelf.plone.hosting.i18n import _
 from propertyshelf.plone.hosting.interfaces import IChefTool
-from propertyshelf.plone.hosting.browser.interfaces import IHostingSettings
+from propertyshelf.plone.hosting.views.interfaces import IHostingSettings
 
 logger = getLogger('propertyshelf.plone.hosting')
 
@@ -55,7 +55,6 @@ class HostingSettingsEditForm(RegistryEditForm):
 
         chef_tool = queryUtility(IChefTool)
         if chef_tool is not None:
-            chef_tool.clear_settings()
             chef_tool.setup(node_name, chef_server_url, client_key)
             if chef_tool.authenticated:
                 api.portal.show_message(

@@ -25,6 +25,7 @@ class DataBagViewlet(ViewletBase):
 
     def update(self):
         self._available = False
+        self._databags = []
         chef_tool = queryUtility(IChefTool)
         if chef_tool is None:
             return
