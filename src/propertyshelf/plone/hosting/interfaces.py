@@ -17,5 +17,14 @@ class IChefTool(Interface):
     def clear_settings():
         """ Clears the current settings for API authentication """
 
+    def setup_from_registry():
+        """ Sets up the API from the settings in the registry """
+
     def setup(node_name, chef_server_url, client_key):
         """ Sets up the API for authentication """
+
+    def get_databags():
+        """ Return a list of all databags of this authenticated instance """
+
+    def get_databag_items(name):
+        """ Return a list of all databag items for the given databag name """
