@@ -11,23 +11,23 @@
 
       <tal:condition condition="view/available">
 
-        <h3>Databag: <span tal:content="context/name">D1</span></h3>
+        <h3>Databags</h3>
 
-        <table class="listing" summary="Databag Items" id="databag-items">
+        <table class="listing" summary="Databag List" id="databag-list">
 
           <thead>
             <tr>
-              <th>Databag Items</th>
+              <th>Databag Name</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr tal:repeat="item context/get_databag_items"
-                tal:attributes="id item/getId">
+            <tr tal:repeat="databag context/get_databags"
+                tal:attributes="id databag/getId">
               <td>
-                <a href="#" 
-                   tal:attributes="href item/getId"
-                   tal:content="item/name">Databag name</a>
+                <a href="#"
+                   tal:attributes="href databag/getId"
+                   tal:content="databag/name">Databag name</a>
               </td>
             </tr>
           </tbody>
@@ -38,5 +38,4 @@
 
     </metal:content-core>
   </metal:content-core>
-
 </html>

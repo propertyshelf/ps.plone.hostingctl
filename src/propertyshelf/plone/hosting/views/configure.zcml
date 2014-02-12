@@ -13,15 +13,30 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
-    <browser:viewlet
-        name="databag-view" 
-        class=".viewlets.DataBagViewlet"
-        manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    <browser:page
+        name="index.html" 
+        class=".databag_list.DataBagListView"
         layer=".interfaces.IHostingSpecific"
         permission="zope2.View"
-        for="*"
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
         />
 
-    
+    <browser:defaultView
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
+        name="index.html"
+        />
+
+    <browser:page
+        name="index.html" 
+        class=".databag.DataBagView"
+        layer=".interfaces.IHostingSpecific"
+        permission="zope2.View"
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
+        />
+
+    <browser:defaultView
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
+        name="index.html"
+        />
 
 </configure>

@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="propertyshelf.plone.hosting">
+
+  <!-- Databag List -->
+  <!-- =========== -->
+  <interface
+      interface="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
+      type="zope.app.content.interfaces.IContentType"
+      />
+
+  <!-- Databag -->
+  <!-- =========== -->
+  <interface
+      interface="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
+      type="zope.app.content.interfaces.IContentType"
+      />
+
+  <!-- Databag Item -->
+  <!-- =========== -->
+  <interface
+      interface="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagItem"
+      type="zope.app.content.interfaces.IContentType"
+      />
+
+</configure>

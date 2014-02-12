@@ -6,6 +6,7 @@
     i18n_domain="propertyshelf.plone.hosting">
 
     <five:registerPackage package="." initialize=".initialize" />
+    <include package=".content" />
     <include package=".views" />
   
     <genericsetup:registerProfile
@@ -24,6 +25,15 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
   
+    <!-- Register the import step on installation -->
+    <genericsetup:importStep
+        name="propertysehfl.plone.hosting"
+        title="propertyshelf.plone.hosting import handlers"
+        description=""
+        handler="propertyshelf.plone.hosting.setuphandlers.setup_various"
+        />
+
+
     <utility
         factory=".chef_tool.ChefTool"
         provides=".interfaces.IChefTool"

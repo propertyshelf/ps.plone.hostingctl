@@ -37,7 +37,10 @@ setup(
         'setuptools',
         'plone.directives.form',
         'plone.api',
-        'pychef'
+        'pychef',
+        'zope.app.container',
+        'ipython',
+        'ipdb'
         # -*- Extra requirements: -*-
     ],
     extras_require={'test': ['plone.app.testing']},
