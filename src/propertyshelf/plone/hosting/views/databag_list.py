@@ -23,9 +23,10 @@ class DataBagListView(BrowserView):
         self.update()
         return self.index()
 
-    def update(self):
-        self.context.update()
-
     @property
     def available(self):
         return self.context.available
+        
+    def update(self):
+        self.context.update()
+
