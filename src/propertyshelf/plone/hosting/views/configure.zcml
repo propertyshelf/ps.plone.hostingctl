@@ -39,4 +39,17 @@
         name="index.html"
         />
 
+    <browser:page
+        name="index.html" 
+        class=".databag_item.DataBagItemView"
+        layer=".interfaces.IHostingSpecific"
+        permission="zope2.View"
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagItem"
+        />
+
+    <browser:defaultView
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagItem"
+        name="index.html"
+        />
+
 </configure>

@@ -52,3 +52,12 @@ class IPloneDataBagItem(IContained):
     """
     containers('.IPloneDataBag')
 
+    def update():
+        """
+            Updates the data within this databag item using the PyChef API
+        """
+
+    def get_data():
+        """
+            Returns a dictionary of key-value pairs from this databag item
+        """

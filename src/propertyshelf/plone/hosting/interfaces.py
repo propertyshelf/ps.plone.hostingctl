@@ -28,3 +28,9 @@ class IChefTool(Interface):
 
     def get_databag_items(name):
         """ Return a list of all databag items for the given databag name """
+
+    def get_data(bag, item):
+        """
+            Return the dictionary of attribute-value pairs for the given
+            databag item
+        """

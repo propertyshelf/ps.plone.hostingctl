@@ -39,7 +39,7 @@ class PloneDataBag(Folder):
         self._available = chef_tool.authenticated
 
         self.manage_delObjects(self.objectIds())
-        for name in chef_tool.get_databag_items(self.name):
-            item = PloneDataBagItem(name)        # TODO: make factory
+        for item_name in chef_tool.get_databag_items(self.name):
+            item = PloneDataBagItem(self.name, item_name)        # TODO: make factory
             self[item.getId()] = item
 

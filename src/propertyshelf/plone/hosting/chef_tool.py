@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # python imports
-from chef import ChefAPI
-from chef import Client
-from chef import DataBag
+from chef import ChefAPI, Client, DataBag, DataBagItem
 
 # zope imports
 from persistent import Persistent
@@ -84,3 +82,10 @@ class ChefTool(Persistent):
 
         bag = DataBag(name, api=self._api)
         return bag.keys()
+
+    def get_data(self, bag, item):
+        if not self._authenticated:
+            return {}
+
+        item = DataBagItem(bag, item, api=self._api)
+        return item.raw_data
