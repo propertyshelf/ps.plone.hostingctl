@@ -9,8 +9,11 @@
 
       <tal:condition condition="not: view/available">
         <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
-        <p>Update the <a href="#"
-            tal:attributes="href string:${context/@@plone_portal_state/portal_url}/@@hosting-settings">Chef Settings</a>
+        <p>Update the
+          <a href="#"
+              tal:attributes="href string:${context/@@plone_portal_state/portal_url}/@@hosting-settings">
+              Chef Settings
+          </a>
         </p>
       </tal:condition>
 
