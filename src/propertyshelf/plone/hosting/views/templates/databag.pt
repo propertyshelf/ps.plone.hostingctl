@@ -11,28 +11,34 @@
 
       <tal:condition condition="view/available">
 
-        <h3>Databag: <span tal:content="context/name">D1</span></h3>
+        <p tal:condition="not: context/exists">
+          Databag <b tal:content="context/name">id</b> no longer exists.
+        </p>
 
-        <table class="listing" summary="Databag Items" id="databag-items">
+        <tal:condition condition="context/exists">
+          <h3>Databag: <span tal:content="context/name">D1</span></h3>
 
-          <thead>
-            <tr>
-              <th>Databag Items</th>
-            </tr>
-          </thead>
+          <table class="listing" summary="Databag Items" id="databag-items">
 
-          <tbody>
-            <tr tal:repeat="item context/get_databag_items"
-                tal:attributes="id item/getId">
-              <td>
-                <a href="#" 
-                   tal:attributes="href item/getId"
-                   tal:content="item/name">Databag name</a>
-              </td>
-            </tr>
-          </tbody>
+            <thead>
+              <tr>
+                <th>Databag Items</th>
+              </tr>
+            </thead>
 
-        </table>
+            <tbody>
+              <tr tal:repeat="item context/get_databag_items"
+                  tal:attributes="id item/getId">
+                <td>
+                  <a href="#" 
+                     tal:attributes="href item/getId"
+                     tal:content="item/name">Databag name</a>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </tal:condition>
 
       </tal:condition>
 

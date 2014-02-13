@@ -22,10 +22,15 @@ class PloneDataBag(Folder):
         super(PloneDataBag, self).__init__()
         self.name = name
         self.id = str(name)
+        self._exists = True
 
     @property
     def available(self):
         return self._available
+
+    @property
+    def exists(self):
+        return self._exists
 
     def get_databag_items(self):
         return sorted(self.values(), key=lambda x: x.name)
@@ -37,9 +42,15 @@ class PloneDataBag(Folder):
             return
 
         self._available = chef_tool.authenticated
+        self._exists = True
 
         self.manage_delObjects(self.objectIds())
-        for item_name in chef_tool.get_databag_items(self.name):
+
+        allItems = chef_tool.get_databag_items(self.name)
+        if allItems is None:
+            self._exists = False
+            return
+
+        for item_name in allItems:
             item = PloneDataBagItem(self.name, item_name)        # TODO: make factory
             self[item.getId()] = item
-

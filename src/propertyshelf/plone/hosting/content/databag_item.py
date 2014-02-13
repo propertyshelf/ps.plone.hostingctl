@@ -23,11 +23,16 @@ class PloneDataBagItem(SimpleItem):
         self.name = name
         self.id = str(name)
         self._data = {}
+        self._exists = True
 
     @property
     def available(self):
         return self._available
 
+    @property
+    def exists(self):
+        return self._exists
+        
     def get_data(self):
         return self._data
 
@@ -38,4 +43,8 @@ class PloneDataBagItem(SimpleItem):
             return
 
         self._available = chef_tool.authenticated
+        self._exists = True
+
         self._data = chef_tool.get_data(self.parent, self.name)
+        if not self._data:
+            self._exists = False

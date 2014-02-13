@@ -81,11 +81,18 @@ class ChefTool(Persistent):
             return []
 
         bag = DataBag(name, api=self._api)
+
+        if not bag.exists:
+            return None
+
         return bag.keys()
 
-    def get_data(self, bag, item):
+    def get_data(self, bag_name, item_name):
         if not self._authenticated:
             return {}
 
-        item = DataBagItem(bag, item, api=self._api)
+        item = DataBagItem(bag_name, item_name, api=self._api)
+        if not item.raw_data:
+            return None
+
         return item.raw_data
