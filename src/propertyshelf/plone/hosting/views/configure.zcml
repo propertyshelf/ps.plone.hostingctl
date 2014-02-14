@@ -52,4 +52,18 @@
         name="index.html"
         />
 
+    <browser:page
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
+        name="add"
+        class=".databag_list.DataBagAddFormView"
+        permission="cmf.AddPortalContent"
+        />
+
+    <browser:page
+        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
+        name="add"
+        class=".databag.DataBagItemAddFormView"
+        permission="cmf.AddPortalContent"
+        />
+
 </configure>

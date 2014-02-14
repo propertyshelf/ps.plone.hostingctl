@@ -71,13 +71,13 @@ class ChefTool(Persistent):
         self._api = None
 
     def get_databags(self):
-        if not self._authenticated:
+        if not self.authenticated:
             return []
 
         return list(DataBag.list(api=self._api))
 
     def get_databag_items(self, name):
-        if not self._authenticated:
+        if not self.authenticated:
             return []
 
         bag = DataBag(name, api=self._api)
@@ -88,7 +88,7 @@ class ChefTool(Persistent):
         return bag.keys()
 
     def get_data(self, bag_name, item_name):
-        if not self._authenticated:
+        if not self.authenticated:
             return {}
 
         item = DataBagItem(bag_name, item_name, api=self._api)
@@ -96,3 +96,26 @@ class ChefTool(Persistent):
             return None
 
         return item.raw_data
+
+    def create_databag(self, bag_name):
+        """
+            Creates a DataBag on the Chef server with the given name. Throws
+            a ChefServerError if the DataBag with that name already exists.
+        """
+
+        if not self.authenticated:
+            return
+
+        return DataBag.create(bag_name, api=self._api)
+
+    def create_databag_item(self, bag_name, item_id):
+        """
+            Creates a DataBagItem on the Chef server with the given id in the
+            given databag. Throws a ChefServerError if the DataBag with that
+            name already exists.
+        """
+
+        if not self.authenticated:
+            return
+
+        return DataBagItem.create(bag_name, item_id, api=self._api)

@@ -18,6 +18,8 @@ from propertyshelf.plone.hosting.interfaces import IChefTool
 @implementer(IPloneDataBag)
 class PloneDataBag(Folder):
 
+    __name__ = __parent__ = None
+
     def __init__(self, name):
         super(PloneDataBag, self).__init__()
         self.name = name
@@ -54,3 +56,10 @@ class PloneDataBag(Folder):
         for item_name in allItems:
             item = PloneDataBagItem(self.name, item_name)        # TODO: make factory
             self[item.getId()] = item
+
+    def add_databag_item(self, item_id):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is None:
+            return
+
+        return chef_tool.create_databag_item(self.name, item_id)

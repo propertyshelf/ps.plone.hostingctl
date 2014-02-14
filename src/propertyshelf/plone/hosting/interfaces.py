@@ -34,3 +34,9 @@ class IChefTool(Interface):
             Return the dictionary of attribute-value pairs for the given
             databag item
         """
+
+    def create_databag(bag_name):
+        """
+            Creates a DataBag on the Chef server with the given name. Throws
+            a ChefServerError if the DataBag with that name already exists.
+        """

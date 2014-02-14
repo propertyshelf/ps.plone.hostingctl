@@ -43,3 +43,10 @@ class PloneDataBagList(Folder, Contained):
         for name in chef_tool.get_databags():
             databag = PloneDataBag(name)        # TODO: make factory
             self[databag.getId()] = databag
+
+    def add_databag(self, name):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is None:
+            return
+
+        return chef_tool.create_databag(name)

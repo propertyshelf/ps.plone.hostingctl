@@ -6,6 +6,10 @@
 from zope.container.constraints import containers, contains
 from zope.container.interfaces import IContainer
 from zope.location.interfaces import IContained
+from zope import schema
+
+# local imports
+from propertyshelf.plone.hosting.i18n import _
 
 
 class IPloneDataBagList(IContainer, IContained):
@@ -24,6 +28,12 @@ class IPloneDataBagList(IContainer, IContained):
             Returns a list of databags within the container
         """
 
+    def add_databag(name):
+        """
+            Adds a new databag to the Chef server that will be later added to
+            this container on self.update()
+        """
+
 
 class IPloneDataBag(IContainer, IContained):
     """
@@ -32,6 +42,12 @@ class IPloneDataBag(IContainer, IContained):
     """
     containers('.IPloneDataBagList')
     contains('.IPloneDataBagItem')
+
+    name = schema.TextLine(
+        title=_(u'Name'),
+        required=True,
+        default=u''
+    )
 
     def update():
         """
@@ -43,6 +59,12 @@ class IPloneDataBag(IContainer, IContained):
             Returns a list of databag items within this specific databag
         """
 
+    def add_databag_item(self, item_id):
+        """
+            Adds a new databag item with the given id that will be shown in
+            this container on the next self.update()
+        """
+
 
 class IPloneDataBagItem(IContained):
     """
@@ -51,6 +73,12 @@ class IPloneDataBagItem(IContained):
         is a dictionary of key-value pairs.
     """
     containers('.IPloneDataBag')
+
+    id = schema.TextLine(
+        title=_(u'ID'),
+        required=True,
+        default=u''
+    )
 
     def update():
         """

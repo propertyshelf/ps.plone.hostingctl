@@ -17,6 +17,8 @@ from propertyshelf.plone.hosting.interfaces import IChefTool
 @implementer(IPloneDataBagItem)
 class PloneDataBagItem(SimpleItem):
 
+    __name__ = __parent__ = None
+    
     def __init__(self, bag, name):
         super(PloneDataBagItem, self).__init__()
         self.parent = bag
@@ -32,7 +34,7 @@ class PloneDataBagItem(SimpleItem):
     @property
     def exists(self):
         return self._exists
-        
+
     def get_data(self):
         return self._data
 
