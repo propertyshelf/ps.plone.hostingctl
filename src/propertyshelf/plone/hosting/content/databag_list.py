@@ -7,7 +7,6 @@ from OFS.Folder import Folder
 
 # zope imports
 from zope.component import queryUtility
-from zope.container.contained import Contained
 from zope.interface import implementer
 
 # local imports
@@ -17,7 +16,7 @@ from propertyshelf.plone.hosting.interfaces import IChefTool
 
 
 @implementer(IPloneDataBagList)
-class PloneDataBagList(Folder, Contained):
+class PloneDataBagList(Folder):
 
     def __init__(self, name):
         super(PloneDataBagList, self).__init__()

@@ -12,7 +12,7 @@ from zope import schema
 from propertyshelf.plone.hosting.i18n import _
 
 
-class IPloneDataBagList(IContainer, IContained):
+class IPloneDataBagList(IContainer):
     """
         Container for a list of databags
     """
