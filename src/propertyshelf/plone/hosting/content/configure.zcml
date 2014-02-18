@@ -24,4 +24,16 @@
       type="zope.app.content.interfaces.IContentType"
       />
 
+  <!-- Factories -->
+  <!-- ========= -->
+  <utility
+      component=".databag.databag_factory"
+      name="hosting.DataBag"
+      />
+
+  <utility
+      component=".databag_item.databag_item_factory"
+      name="hosting.DataBagItem"
+      />
+
 </configure>

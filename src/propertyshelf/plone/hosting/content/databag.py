@@ -6,7 +6,8 @@
 from OFS.Folder import Folder
 
 # zope imports
-from zope.component import queryUtility
+from zope.component import createObject, queryUtility
+from zope.component.factory import Factory
 from zope.interface import implementer
 
 # local imports
@@ -54,7 +55,7 @@ class PloneDataBag(Folder):
             return
 
         for item_name in allItems:
-            item = PloneDataBagItem(self.name, item_name)        # TODO: make factory
+            item = createObject('hosting.DataBagItem', self.name, item_name)
             self[item.getId()] = item
 
     def add_databag_item(self, item_id):
@@ -63,3 +64,10 @@ class PloneDataBag(Folder):
             return
 
         return chef_tool.create_databag_item(self.name, item_id)
+
+
+databag_factory = Factory(
+    PloneDataBag,
+    title=u'Create a new Databag',
+    description=u'This is a factory to create new Databags'
+)

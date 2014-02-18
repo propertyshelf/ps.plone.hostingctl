@@ -7,6 +7,7 @@ from OFS.SimpleItem import SimpleItem
 
 # zope imports
 from zope.component import queryUtility
+from zope.component.factory import Factory
 from zope.interface import implementer
 
 # local imports
@@ -50,3 +51,10 @@ class PloneDataBagItem(SimpleItem):
         self._data = chef_tool.get_data(self.parent, self.name)
         if not self._data:
             self._exists = False
+
+
+databag_item_factory = Factory(
+    PloneDataBagItem,
+    title=u'Create a Databag Item',
+    description=u'Factory to create a new Databag Item'
+)

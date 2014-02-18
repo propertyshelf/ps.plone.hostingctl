@@ -6,7 +6,7 @@
 from OFS.Folder import Folder
 
 # zope imports
-from zope.component import queryUtility
+from zope.component import createObject, queryUtility
 from zope.interface import implementer
 
 # local imports
@@ -40,7 +40,7 @@ class PloneDataBagList(Folder):
 
         self.manage_delObjects(self.objectIds())
         for name in chef_tool.get_databags():
-            databag = PloneDataBag(name)        # TODO: make factory
+            databag = createObject('hosting.DataBag', name)
             self[databag.getId()] = databag
 
     def add_databag(self, name):
