@@ -39,8 +39,6 @@ setup(
         'plone.api',
         'pychef',
         'zope.app.container',
-        'ipython',
-        'ipdb'
         # -*- Extra requirements: -*-
     ],
     extras_require={'test': ['plone.app.testing']},
@@ -49,4 +47,4 @@ setup(
         [z3c.autoinclude.plugin]
         target = plone
         """,
-    )
+)
