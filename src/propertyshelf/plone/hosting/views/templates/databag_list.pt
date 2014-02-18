@@ -7,6 +7,18 @@
   <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
+      <div tal:define="items view/databag_items | nothing"
+         tal:condition="items">
+         <h3>Databags</h3>
+         <p tal:content="items"></p>
+       </div>
+
+      <div tal:define="item view/databag_item_details | nothing"
+         tal:condition="item">
+         <h3>Databag item</h3>
+         <p tal:content="item"></p>
+      </div>
+
       <tal:condition condition="not: view/available">
         <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
         <p>Update the
@@ -30,7 +42,7 @@
           </thead>
 
           <tbody>
-            <tr tal:repeat="databag context/get_databags"
+            <tr tal:repeat="databag context/get_databags | nothing"
                 tal:attributes="id databag/getId">
               <td>
                 <a href="#"
@@ -44,7 +56,7 @@
 
         <div id="skel-contents">
 
-          <tal:form define="form nocall:view/form">
+          <tal:form define="form nocall:view/form | nothing" tal:condition="form">
 
             <!-- plone.app.z3cform package provides view ploneform-macros
                  which come with a helpers to render forms. This one
@@ -58,7 +70,7 @@
 
           </tal:form>
         </div>
-          
+
       </tal:condition>
 
     </metal:content-core>

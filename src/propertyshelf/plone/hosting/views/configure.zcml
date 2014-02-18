@@ -14,6 +14,16 @@
         />
 
     <browser:page
+        name="databag"
+        class=".views.Databags"
+        layer=".interfaces.IHostingSpecific"
+        permission="zope2.View"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        template="templates/databag_list.pt"
+        />
+
+
+    <browser:page
         name="index.html" 
         class=".databag_list.DataBagListView"
         layer=".interfaces.IHostingSpecific"
