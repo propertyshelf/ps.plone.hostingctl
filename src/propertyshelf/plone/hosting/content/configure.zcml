@@ -3,8 +3,21 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="propertyshelf.plone.hosting">
 
+  <include package="Products.CMFCore" file="permissions.zcml" />
+
   <!-- Databag List -->
   <!-- =========== -->
+  <class class=".databag_list.PloneDataBagList">
+      <require
+          permission="zope2.View"
+          interface="zope.app.container.interfaces.IReadContainer"
+          />
+      <require
+          permission="cmf.ManagePortal"
+          interface="zope.app.container.interfaces.IWriteContainer"
+          />
+  </class>
+
   <interface
       interface="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
       type="zope.app.content.interfaces.IContentType"
@@ -12,6 +25,17 @@
 
   <!-- Databag -->
   <!-- =========== -->
+  <class class=".databag.PloneDataBag">
+      <require
+          permission="zope2.View"
+          interface="zope.app.container.interfaces.IReadContainer"
+          />
+      <require
+          permission="cmf.ManagePortal"
+          interface="zope.app.container.interfaces.IWriteContainer"
+          />
+  </class>
+
   <interface
       interface="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
       type="zope.app.content.interfaces.IContentType"
