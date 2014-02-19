@@ -4,6 +4,7 @@
     i18n_domain="propertyshelf.hosting.plone">
 
     <include package="plone.app.controlpanel" />
+    <include package="Products.CMFCore" file="permissions.zcml" />
 
     <browser:page
         name="hosting-settings" 
@@ -14,66 +15,28 @@
         />
 
     <browser:page
-        name="databag"
-        class=".views.Databags"
+        name="application-listing"
+        class=".views.DatabagView"
         layer=".interfaces.IHostingSpecific"
         permission="zope2.View"
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-        template="templates/databag_list.pt"
+        template="templates/databags.pt"
         />
 
-
     <browser:page
-        name="index.html" 
-        class=".databag_list.DataBagListView"
+        name="create-databag"
+        class=".views.AddDatabagView"
         layer=".interfaces.IHostingSpecific"
-        permission="zope2.View"
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
-        />
-
-    <browser:defaultView
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
-        name="index.html"
+        permission="cmf.ManagePortal"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
     <browser:page
-        name="index.html" 
-        class=".databag.DataBagView"
+        name="create-item"
+        class=".views.AddDatabagItemView"
         layer=".interfaces.IHostingSpecific"
-        permission="zope2.View"
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
-        />
-
-    <browser:defaultView
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
-        name="index.html"
-        />
-
-    <browser:page
-        name="index.html" 
-        class=".databag_item.DataBagItemView"
-        layer=".interfaces.IHostingSpecific"
-        permission="zope2.View"
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagItem"
-        />
-
-    <browser:defaultView
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagItem"
-        name="index.html"
-        />
-
-    <browser:page
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBagList"
-        name="add"
-        class=".databag_list.DataBagAddFormView"
-        permission="cmf.AddPortalContent"
-        />
-
-    <browser:page
-        for="propertyshelf.plone.hosting.content.interfaces.IPloneDataBag"
-        name="add"
-        class=".databag.DataBagItemAddFormView"
-        permission="cmf.AddPortalContent"
+        permission="cmf.ManagePortal"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
 </configure>

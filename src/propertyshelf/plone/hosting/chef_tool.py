@@ -87,7 +87,7 @@ class ChefTool(object):
 
         return bag.keys()
 
-    def get_data(self, bag_name, item_name):
+    def get_data_from_item(self, bag_name, item_name):
         if not self.authenticated:
             return {}
 

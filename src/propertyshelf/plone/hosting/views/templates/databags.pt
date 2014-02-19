@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master">
+
+  <metal:content-core fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+
+
+      <tal:condition condition="not: view/available">
+        <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
+        <p>Update the
+          <a href="#"
+              tal:attributes="href string:${context/@@plone_portal_state/portal_url}/@@hosting-settings">
+              Chef Settings
+          </a>
+        </p>
+      </tal:condition>
+
+      <tal:condition condition="view/available">
+
+
+        <!--       DATABAG LISTING       -->
+        <!-- =========================== -->
+        <div tal:define="databags view/list_databags | nothing"
+          tal:condition="databags">
+
+          <h3>Databags</h3>
+
+          <table class="listing" summary="Databag List" id="databag-list">
+            <thead>
+              <tr>
+                <th>Databag Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="bag databags"
+                  tal:attributes="id bag">
+                <td>
+                  <a href="#"
+                     tal:attributes="href string:${request/getURL}/${bag}"
+                     tal:content="bag">Databag name</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <!--       DATABAG VIEW          -->
+        <!-- =========================== -->
+        <div tal:define="items view/databag_items | nothing"
+             tal:condition="items">
+
+          <h3>Databag Items</h3>
+
+          <table class="listing" summary="Databag Items" id="databag-items">
+            <thead>
+              <tr>
+                <th>Databag Item</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="item items"
+                  tal:attributes="id item">
+                <td>
+                  <a href="#"
+                     tal:attributes="href string:${request/getURL}/${item}"
+                     tal:content="item">Item name</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        
+        <!--      DATABAG ITEM VIEW      -->
+        <!-- =========================== -->  
+        <div tal:define="data view/databag_item_details | nothing"
+             tal:condition="data">
+          <table class="listing" summary="Databag Items" id="databag-items">
+
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="key data/keys"
+                  tal:attributes="id key">
+                <td>
+                  <span tal:content="key">Attrib1</span>
+                </td>
+                <td>
+                  <span tal:content="data/?key">Val1</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>             
+        </div>
+  
+
+        <div id="skel-contents">
+
+          <tal:form define="form nocall:view/form | nothing" tal:condition="form">
+
+            <!-- plone.app.z3cform package provides view ploneform-macros
+                 which come with a helpers to render forms. This one
+                 will render the form body only. It also makes an assumption
+                 that form is presented in "view" TAL variable.
+
+              -->
+            <tal:with-form-as-view define="view nocall:form">
+                <metal:block use-macro="form/@@ploneform-macros/titlelessform" />
+            </tal:with-form-as-view>
+
+          </tal:form>
+        </div>
+
+      </tal:condition>
+
+    </metal:content-core>
+  </metal:content-core>
+</html>

@@ -6,7 +6,6 @@
     i18n_domain="propertyshelf.plone.hosting">
 
     <five:registerPackage package="." initialize=".initialize" />
-    <include package=".content" />
     <include package=".views" />
   
     <genericsetup:registerProfile

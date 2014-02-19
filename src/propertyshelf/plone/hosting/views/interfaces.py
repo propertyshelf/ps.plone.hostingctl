@@ -36,3 +36,25 @@ class IHostingSettings(form.Schema):
         default=u'',
         required=True
     )
+
+
+class IDatabag(form.Schema):
+    """
+        Schema interface for the basic databag type
+    """
+
+    name = schema.TextLine(
+        title=_(u'Name'),
+        required=True
+    )
+
+    
+class IDatabagItem(form.Schema):
+    """
+        Schema interface for the basic databag type
+    """
+
+    name = schema.TextLine(
+        title=_(u'Name'),
+        required=True
+    )
