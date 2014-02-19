@@ -25,14 +25,4 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
   
-    <!-- Register the import step on installation -->
-    <genericsetup:importStep
-        name="propertysehfl.plone.hosting"
-        title="propertyshelf.plone.hosting import handlers"
-        description=""
-        handler="propertyshelf.plone.hosting.setuphandlers.setup_various"
-        />
-
-
-
 </configure>
