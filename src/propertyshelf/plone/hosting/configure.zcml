@@ -34,10 +34,5 @@
         />
 
 
-    <utility
-        factory=".chef_tool.ChefTool"
-        provides=".interfaces.IChefTool"
-        permission="zope.Public"
-        />
 
 </configure>
