@@ -98,23 +98,12 @@ class ChefTool(object):
         return item.raw_data
 
     def create_databag(self, bag_name):
-        """
-            Creates a DataBag on the Chef server with the given name. Throws
-            a ChefServerError if the DataBag with that name already exists.
-        """
-
         if not self.authenticated:
             return
 
         return DataBag.create(bag_name, api=self._api)
 
     def create_databag_item(self, bag_name, item_id):
-        """
-            Creates a DataBagItem on the Chef server with the given id in the
-            given databag. Throws a ChefServerError if the DataBag with that
-            name already exists.
-        """
-
         if not self.authenticated:
             return
 

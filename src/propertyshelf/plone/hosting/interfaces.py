@@ -29,7 +29,7 @@ class IChefTool(Interface):
     def get_databag_items(name):
         """ Return a list of all databag items for the given databag name """
 
-    def get_data(bag, item):
+    def get_data_from_item(bag, item):
         """
             Return the dictionary of attribute-value pairs for the given
             databag item
@@ -39,4 +39,11 @@ class IChefTool(Interface):
         """
             Creates a DataBag on the Chef server with the given name. Throws
             a ChefServerError if the DataBag with that name already exists.
+        """
+
+    def create_databag_item(bag_name, item_id):
+        """
+            Creates a DataBagItem on the Chef server with the given id in the
+            given databag. Throws a ChefServerError if the DataBag with that
+            name already exists.
         """
