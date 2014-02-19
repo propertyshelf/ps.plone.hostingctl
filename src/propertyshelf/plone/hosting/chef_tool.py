@@ -17,7 +17,7 @@ from .views.interfaces import IHostingSettings
 
 
 @implementer(IChefTool)
-class ChefTool(Persistent):
+class ChefTool(object):
     """ Utility for interaction with Chef API """
 
     def __init__(self):
