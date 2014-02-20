@@ -66,6 +66,7 @@ class DatabagView(BrowserView):
             self.form = None
         else:
             self.form.update_path(self.traverse_subpath)
+            self.form.update()
         return self.index()
 
     def publishTraverse(self, request, name):
