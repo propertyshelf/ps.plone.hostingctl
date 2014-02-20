@@ -100,6 +100,15 @@ class AddDatabagForm(form.AddForm):
 
     fields = field.Fields(IDatabag)
     label = _(u'Add Databag')
+    
+    @property
+    def valid(self):
+        return True
+
+    def update(self):
+        super(AddDatabagForm, self).update()
+        if self._finishedAdd:
+            self.request.response.redirect(self.nextURL())
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
@@ -148,20 +157,23 @@ class AddDatabagItemForm(form.AddForm):
     label = _(u'New item for databag ')
 
     parent = None
+    _valid = True
+
+    @property
+    def valid(self):
+        return self._valid
 
     def update(self):
+        super(AddDatabagItemForm, self).update()
+        if self._finishedAdd:
+            self.request.response.redirect(self.nextURL())
+
         if self.parent is None:
+            self._valid = False
             api.portal.show_message(
                 _(u'Databag item must be added to a specific parent databag'),
                 request=self.request,
                 type='error')
-
-        super(AddDatabagItemForm, self).update()
-
-    def render(self):
-        if self.parent is None:
-            return ""
-        return super(AddDatabagItemForm, self).render()
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
