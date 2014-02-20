@@ -32,6 +32,7 @@
             <thead>
               <tr>
                 <th>Databag Name</th>
+                <th/>
               </tr>
             </thead>
             <tbody>
@@ -41,6 +42,10 @@
                   <a href="#"
                      tal:attributes="href string:${request/getURL}/${bag}"
                      tal:content="bag">Databag name</a>
+                </td>
+                <td>
+                  <a href="#"
+                     tal:attributes="href string:remove-databag?name=${bag}">Delete</a>
                 </td>
               </tr>
             </tbody>

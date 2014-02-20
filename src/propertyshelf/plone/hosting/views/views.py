@@ -233,3 +233,21 @@ class AddDatabagItemView(BrowserView):
         if self.available:
             self.form.update_path(self.traverse_subpath)
             self.form.update()
+
+
+class DeleteDatabagView(BrowserView):
+    """
+        Basic view that displays nothing but will delete the databag that
+        is passed to it through the query string
+    """
+
+    def __call__(self):
+        name = self.request.form.get('name')
+        self.remove_databag(name)
+        self.request.response.redirect('application-listing')
+        return ""
+
+    def remove_databag(self, name):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool:
+            chef_tool.remove_databag(name)

@@ -47,3 +47,8 @@ class IChefTool(Interface):
             given databag. Throws a ChefServerError if the DataBag with that
             name already exists.
         """
+
+    def remove_databag(self, bag_name):
+        """
+            Removes the given databag with name bag_name from the server
+        """

@@ -39,4 +39,11 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <browser:page
+        name="remove-databag"
+        class=".views.DeleteDatabagView"
+        layer=".interfaces.IHostingSpecific"
+        permission="cmf.ManagePortal"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        />
 </configure>
