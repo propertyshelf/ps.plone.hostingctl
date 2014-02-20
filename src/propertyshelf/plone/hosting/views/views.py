@@ -100,6 +100,14 @@ class AddDatabagForm(form.AddForm):
 
     fields = field.Fields(IDatabag)
     label = _(u'Add Databag')
+    template = ViewPageTemplateFile('templates/add_form.pt')
+
+    @property
+    def available(self):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is not None:
+            return chef_tool.authenticated
+        return False
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
@@ -114,10 +122,6 @@ class AddDatabagForm(form.AddForm):
 
     def nextURL(self):
         return 'application-listing/' + self.databag_name
-
-
-class AddDatabagView(layout.FormWrapper):
-    form = AddDatabagForm
 
 
 class AddDatabagItemForm(form.AddForm):

@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/main_template/macros/master"
+      lang="en">
+      
+    <metal:block fill-slot="main">
+
+      <tal:condition condition="not: view/available">
+        <h3 tal:condition="not: view/available">Chef API must be first initilialized.</h3>
+        <p>Update the
+          <a href="#"
+              tal:attributes="href string:${context/@@plone_portal_state/portal_url}/@@hosting-settings">
+              Chef Settings
+          </a>
+        </p>
+      </tal:condition>
+
+      <tal:condition condition="view/available">
+        <h1 class="documentFirstHeading" tal:content="view/label | nothing" />
+        
+        <div id="content-core">
+            <metal:block use-macro="context/@@ploneform-macros/titlelessform" />
+        </div>
+      </tal:condition>
+
+    </metal:block>
+    
+</html>
