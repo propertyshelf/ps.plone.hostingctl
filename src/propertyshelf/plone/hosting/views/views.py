@@ -25,6 +25,8 @@ class DatabagViewForm(form.Form):
         The form that is shown directly below the table view
     """
 
+    traverse_subpath = []
+
     def update_path(self, traverse_subpath):
         self.traverse_subpath = traverse_subpath
 
@@ -64,7 +66,6 @@ class DatabagView(BrowserView):
             self.form = None
         else:
             self.form.update_path(self.traverse_subpath)
-        super(DatabagView, self).__call__()
         return self.index()
 
     def publishTraverse(self, request, name):
