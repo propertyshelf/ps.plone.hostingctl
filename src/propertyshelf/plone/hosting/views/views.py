@@ -13,7 +13,6 @@ from z3c.form import button, field, form
 
 # plone imports
 from plone import api
-from plone.z3cform import layout
 
 # local imports
 from .interfaces import IDatabag, IDatabagItem
