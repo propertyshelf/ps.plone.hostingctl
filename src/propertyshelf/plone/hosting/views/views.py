@@ -100,14 +100,6 @@ class AddDatabagForm(form.AddForm):
 
     fields = field.Fields(IDatabag)
     label = _(u'Add Databag')
-    template = ViewPageTemplateFile('templates/add_form.pt')
-
-    @property
-    def available(self):
-        chef_tool = queryUtility(IChefTool)
-        if chef_tool is not None:
-            return chef_tool.authenticated
-        return False
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
@@ -124,6 +116,29 @@ class AddDatabagForm(form.AddForm):
         return 'application-listing/' + self.databag_name
 
 
+class AddDatabagView(BrowserView):
+    """
+        View associated to wrap around the AddDatabagForm class
+    """
+
+    index = ViewPageTemplateFile('templates/add_form.pt')
+
+    def __init__(self, context, request):
+        super(AddDatabagView, self).__init__(context, request)
+        self.form = AddDatabagForm(context, request)
+
+    def __call__(self):
+        self.form.update()
+        return self.index()
+
+    @property
+    def available(self):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is not None:
+            return chef_tool.authenticated
+        return False
+
+
 class AddDatabagItemForm(form.AddForm):
     """
         Add form to create a new databag item of type IDatabagItem
@@ -134,14 +149,18 @@ class AddDatabagItemForm(form.AddForm):
 
     parent = None
 
-    def render(self):
+    def update(self):
         if self.parent is None:
             api.portal.show_message(
                 _(u'Databag item must be added to a specific parent databag'),
                 request=self.request,
                 type='error')
-            return ""
 
+        super(AddDatabagItemForm, self).update()
+
+    def render(self):
+        if self.parent is None:
+            return ""
         return super(AddDatabagItemForm, self).render()
 
     def createAndAdd(self, data):
@@ -168,23 +187,36 @@ class AddDatabagItemForm(form.AddForm):
 
 
 @implementer(IPublishTraverse)
-class AddDatabagItemView(layout.FormWrapper):
+class AddDatabagItemView(BrowserView):
     """
         View to wrap the form for adding a new databag item. Implements
         IPublishTraverse in order to ensure the item is being added to a
         databag parent.
     """
 
+    index = ViewPageTemplateFile('templates/add_form.pt')
+
     def __init__(self, context, request):
         super(AddDatabagItemView, self).__init__(context, request)
         self.traverse_subpath = []
-        self.form_instance = AddDatabagItemForm(context, request)
-        self.form_instance.__name__ = self.__name__
+        self.form = AddDatabagItemForm(context, request)
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    @property
+    def available(self):
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool is not None:
+            return chef_tool.authenticated
+        return False
 
     def publishTraverse(self, request, name):
         self.traverse_subpath.append(name)
         return self
 
     def update(self):
-        self.form_instance.update_path(self.traverse_subpath)
-        super(AddDatabagItemView, self).update()
+        if self.available:
+            self.form.update_path(self.traverse_subpath)
+            self.form.update()

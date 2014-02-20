@@ -25,7 +25,7 @@
 
     <browser:page
         name="create-databag"
-        class=".views.AddDatabagForm"
+        class=".views.AddDatabagView"
         layer=".interfaces.IHostingSpecific"
         permission="cmf.ManagePortal"
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
