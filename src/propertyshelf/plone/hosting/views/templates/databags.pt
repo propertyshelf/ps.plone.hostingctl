@@ -1,8 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      lang="en"
-      metal:use-macro="context/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="propertyshelf.plone.hosting"
+      metal:use-macro="context/main_template/macros/master"
+      lang="en">
 
   <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core">
@@ -45,7 +47,11 @@
                 </td>
                 <td>
                   <a href="#"
-                     tal:attributes="href string:remove-databag?name=${bag}">Delete</a>
+                     onclick="return confirm('Are you sure?')"
+                     tal:define="msg string:Are you sure you want to delete this databag?\nAll items within it will also be deleted"
+                     tal:attributes=
+                        "href string:remove-databag?name=${bag};
+                         onclick string:return confirm('${msg}')">Delete</a>
                 </td>
               </tr>
             </tbody>
