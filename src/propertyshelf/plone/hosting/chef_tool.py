@@ -74,7 +74,7 @@ class ChefTool(object):
         if not self.authenticated:
             return []
 
-        return list(DataBag.list(api=self._api))
+        return sorted(list(DataBag.list(api=self._api)))
 
     def get_databag_items(self, name):
         if not self.authenticated:
@@ -85,7 +85,7 @@ class ChefTool(object):
         if not bag.exists:
             return None
 
-        return bag.keys()
+        return sorted(bag.keys())
 
     def get_data_from_item(self, bag_name, item_name):
         if not self.authenticated:
