@@ -14,8 +14,10 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <!--    Main view      -->
+    <!-- ================= -->
     <browser:page
-        name="application-listing"
+        name="applications"
         class=".views.DatabagView"
         layer=".interfaces.IHostingSpecific"
         permission="zope2.View"
@@ -23,6 +25,8 @@
         template="templates/databags.pt"
         />
 
+    <!--    Create views   -->
+    <!-- ================= -->
     <browser:page
         name="create-databag"
         class=".views.AddDatabagView"
@@ -39,6 +43,8 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <!--    Delete views   -->
+    <!-- ================= -->
     <browser:page
         name="remove"
         class=".views.DeleteDatabagView"
@@ -47,6 +53,8 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <!--    Breadcrumbs    -->
+    <!-- ================= -->
     <browser:viewlet
         name="propertyshelf.plone.hosting.breadcrumbs"
         manager="plone.app.layout.viewlets.interfaces.IPortalTop"
