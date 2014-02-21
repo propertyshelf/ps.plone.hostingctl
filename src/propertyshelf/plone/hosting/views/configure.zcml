@@ -46,4 +46,12 @@
         permission="cmf.ManagePortal"
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
+
+    <browser:viewlet
+        name="propertyshelf.plone.hosting.breadcrumbs"
+        manager="plone.app.layout.viewlets.interfaces.IPortalTop"
+        class=".views.HostingBreadcrumbs"
+        layer=".interfaces.IHostingSpecific"
+        permission="zope2.View"
+    />
 </configure>

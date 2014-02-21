@@ -1,0 +1,10 @@
+<object>
+    <hidden manager="plone.abovecontent" skinname="*">
+        <viewlet name="plone.path_bar" />
+    </hidden>
+    <order manager="plone.abovecontent" skinname="*"
+           based-on="Plone Default">
+        <viewlet name="propertyshelf.plone.hosting.breadcrumbs"  skinname="Plone Default"
+                 insert-before="*" />
+    </order>
+</object>

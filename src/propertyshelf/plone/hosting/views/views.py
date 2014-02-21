@@ -13,6 +13,7 @@ from z3c.form import button, field, form
 
 # plone imports
 from plone import api
+from plone.app.layout.viewlets.common import PathBarViewlet
 
 # local imports
 from .interfaces import IDatabag, IDatabagItem
@@ -261,3 +262,24 @@ class DeleteDatabagView(BrowserView):
         chef_tool = queryUtility(IChefTool)
         if chef_tool:
             chef_tool.remove(bag_name, item_name)
+
+
+class HostingBreadcrumbs(PathBarViewlet):
+    render = ViewPageTemplateFile("templates/path_bar.pt")
+
+    def update(self):
+        super(HostingBreadcrumbs, self).update()
+
+        traverse_subpath = getattr(self.view, 'traverse_subpath', [])
+        paths = ['application-listing'] + traverse_subpath
+        urls = ['/'.join(paths[:i + 1]) for i in range(len(paths))]
+        titles = paths
+        titles[0] = 'Applications'
+        self.breadcrumbs = tuple(
+            {'absolute_url': url, 'Title': title}
+            for (url, title) in zip(urls, titles)
+        )
+
+        if self.view.__name__ == 'create-databag' or \
+           self.view.__name__ == 'create-item':
+            self.breadcrumbs += ({'absolute_url': '', 'Title': ''},)
