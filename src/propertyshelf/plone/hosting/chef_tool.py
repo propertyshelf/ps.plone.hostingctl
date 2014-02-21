@@ -109,11 +109,14 @@ class ChefTool(object):
 
         return DataBagItem.create(bag_name, item_id, api=self._api)
 
-    def remove_databag(self, bag_name):
+    def remove(self, bag_name, item_name=None):
         if not self.authenticated:
             return
 
-        bag = DataBag(bag_name, api=self._api)
+        if item_name:
+            obj = DataBagItem(bag_name, item_name, api=self._api)
+        else:
+            obj = DataBag(bag_name, api=self._api)
 
-        if bag.exists:
-            bag.delete(api=self._api)
+        if obj.exists:
+            obj.delete(api=self._api)

@@ -93,6 +93,11 @@ class DatabagView(BrowserView):
             item = self.traverse_subpath[1]
             return self.tool.get_data_from_item(databag, item)
 
+    def get_databag_name(self):
+        if len(self.traverse_subpath) > 0:
+            return self.traverse_subpath[0]
+        return ''
+
 
 class AddDatabagForm(form.AddForm):
     """
@@ -242,12 +247,17 @@ class DeleteDatabagView(BrowserView):
     """
 
     def __call__(self):
-        name = self.request.form.get('name')
-        self.remove_databag(name)
-        self.request.response.redirect('application-listing')
+        bag_name = self.request.form.get('bag_name')
+        item_name = self.request.form.get('item_name')
+        self.remove_databag(bag_name, item_name)
+
+        next_url = 'application-listing'
+        if item_name:
+            next_url += '/' + bag_name
+        self.request.response.redirect(next_url)
         return ""
 
-    def remove_databag(self, name):
+    def remove_databag(self, bag_name, item_name=None):
         chef_tool = queryUtility(IChefTool)
         if chef_tool:
-            chef_tool.remove_databag(name)
+            chef_tool.remove(bag_name, item_name)

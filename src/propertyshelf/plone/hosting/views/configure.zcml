@@ -40,7 +40,7 @@
         />
 
     <browser:page
-        name="remove-databag"
+        name="remove"
         class=".views.DeleteDatabagView"
         layer=".interfaces.IHostingSpecific"
         permission="cmf.ManagePortal"

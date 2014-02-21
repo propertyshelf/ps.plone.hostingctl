@@ -48,7 +48,10 @@ class IChefTool(Interface):
             name already exists.
         """
 
-    def remove_databag(self, bag_name):
+    def remove(bag_name, item_name):
         """
-            Removes the given databag with name bag_name from the server
+            Removes the Chef object from the server. If both item_name and
+            bag_name are provided, this method removes the corresponding
+            DataBagItem. If only the bag_name is provided, the method removes
+            the corresponding DataBag.
         """
