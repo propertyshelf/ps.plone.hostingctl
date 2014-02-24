@@ -129,7 +129,7 @@ class AddDatabagForm(form.AddForm):
                 type='error')
 
     def nextURL(self):
-        return 'application-listing/' + self.databag_name
+        return 'applications/' + self.databag_name
 
 
 class AddDatabagView(BrowserView):
@@ -194,7 +194,7 @@ class AddDatabagItemForm(form.AddForm):
                 type='error')
 
     def nextURL(self):
-        return '%s/application-listing/%s/%s' % (
+        return '%s/applications/%s/%s' % (
             self.context.absolute_url(),
             self.parent,
             self.item_name)
@@ -252,7 +252,7 @@ class DeleteDatabagView(BrowserView):
         item_name = self.request.form.get('item_name')
         self.remove_databag(bag_name, item_name)
 
-        next_url = 'application-listing'
+        next_url = 'applications'
         if item_name:
             next_url += '/' + bag_name
         self.request.response.redirect(next_url)
@@ -271,7 +271,7 @@ class HostingBreadcrumbs(PathBarViewlet):
         super(HostingBreadcrumbs, self).update()
 
         traverse_subpath = getattr(self.view, 'traverse_subpath', [])
-        paths = ['application-listing'] + traverse_subpath
+        paths = ['applications'] + traverse_subpath
         urls = ['/'.join(paths[:i + 1]) for i in range(len(paths))]
         titles = paths
         titles[0] = 'Applications'
