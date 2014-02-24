@@ -30,11 +30,20 @@ class IHostingSettings(form.Schema):
         default=u'',
         required=True
     )
-    
+
     client_key = schema.Text(
         title=_(u'Client key'),
         default=u'',
         required=True
+    )
+
+    prefix_filter = schema.TextLine(
+        title=_(u'Filter prefix'),
+        required=False,
+        default=u'',
+        description=_(
+            u'Used to match and filter the types of applications shown.'
+        )
     )
 
 
@@ -48,7 +57,7 @@ class IDatabag(form.Schema):
         required=True
     )
 
-    
+
 class IDatabagItem(form.Schema):
     """
         Schema interface for the basic databag type
