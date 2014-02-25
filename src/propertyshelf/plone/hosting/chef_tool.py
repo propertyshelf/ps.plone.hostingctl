@@ -141,7 +141,7 @@ class ChefTool(object):
         if not bag.exists:
             return None
 
-        return dict((key, to_display_domain(key)) for key in sorted(bag.keys()))
+        return [(key, to_display_domain(key)) for key in sorted(bag.keys())]
 
     def get_data_from_item(self, bag_name, item_name):
         if not self.authenticated:

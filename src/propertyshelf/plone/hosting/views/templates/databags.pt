@@ -75,22 +75,24 @@
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="key items/keys"
-                  tal:attributes="id key">
-                <td>
-                  <a href="#"
-                     tal:attributes="href string:${request/getURL}/${key}"
-                     tal:content="items/?key">Item name</a>
-                </td>
-                <td>
-                  <a href="#"
-                     onclick="return confirm('Are you sure?')"
-                     tal:define="msg string:Are you sure you want to delete this item?"
-                     tal:attributes=
-                        "href string:remove?item_name=${key}&amp;bag_name=${bag};
-                         onclick string:return confirm('${msg}')">Delete</a>
-                </td>
-              </tr>
+              <div tal:repeat="item items" tal:omit-tag="">
+                <tr tal:define="key python:item[0]; name python:item[1]"
+                    tal:attributes="id key">
+                  <td>
+                    <a href="#"
+                       tal:attributes="href string:${request/getURL}/${key}"
+                       tal:content="name">Item name</a>
+                  </td>
+                  <td>
+                    <a href="#"
+                       onclick="return confirm('Are you sure?')"
+                       tal:define="msg string:Are you sure you want to delete this item?"
+                       tal:attributes=
+                          "href string:remove?item_name=${key}&amp;bag_name=${bag};
+                           onclick string:return confirm('${msg}')">Delete</a>
+                  </td>
+                </tr>
+              </div>
             </tbody>
           </table>
         </div>
