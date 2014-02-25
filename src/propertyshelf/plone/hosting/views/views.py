@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# python imports
-from chef import ChefError
 
 # zope imports
 from Products.Five import BrowserView
@@ -9,40 +7,19 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import queryUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
-from z3c.form import button, field, form
 
 # plone imports
-from plone import api
 from plone.app.layout.viewlets.common import PathBarViewlet
 
 # local imports
-from .interfaces import IDatabag, IDatabagItem, IDomainDatabagItem
+from .forms import (
+    MainViewForm,
+    AddDatabagForm,
+    AddDatabagItemForm,
+    AddDomainItemForm
+)
 from propertyshelf.plone.hosting.utils import to_display_domain
 from propertyshelf.plone.hosting.interfaces import IChefTool
-from propertyshelf.plone.hosting.i18n import _
-
-
-class DatabagViewForm(form.Form):
-    """
-        The form that is shown directly below the table view
-    """
-
-    traverse_subpath = []
-
-    def update_path(self, traverse_subpath):
-        self.traverse_subpath = traverse_subpath
-
-    @button.buttonAndHandler(_(u'Create'), name='create')
-    def handle_create(self, action):
-        data, errors = self.extractData()
-        add_url = ""
-        if len(self.traverse_subpath) == 0:
-            add_url = self.context.absolute_url() + '/create-databag'
-        elif len(self.traverse_subpath) == 1:
-            add_url = '%s/create-domain/%s' % (
-                self.context.absolute_url(),
-                self.traverse_subpath[0])
-        self.request.response.redirect(add_url)
 
 
 @implementer(IPublishTraverse)
@@ -60,7 +37,7 @@ class DatabagView(BrowserView):
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        self.form = DatabagViewForm(context, request)
+        self.form = MainViewForm(context, request)
         self.traverse_subpath = []
         self.tool = queryUtility(IChefTool)
 
@@ -108,171 +85,22 @@ class DatabagView(BrowserView):
         return ''
 
 
-class AddDatabagForm(form.AddForm):
+class FormWrapperView(BrowserView):
     """
-        Add form to create a new databag of type IDatabag
-    """
-
-    fields = field.Fields(IDatabag)
-    label = _(u'Add Databag')
-    
-    @property
-    def valid(self):
-        return True
-
-    def update(self):
-        super(AddDatabagForm, self).update()
-        if self._finishedAdd:
-            self.request.response.redirect(self.nextURL())
-
-    def createAndAdd(self, data):
-        chef_tool = queryUtility(IChefTool)
-        self.databag_name = data.get('name')
-        try:
-            return chef_tool.create_databag(self.databag_name)
-        except ChefError as e:
-            api.portal.show_message(
-                e.message,
-                request=self.request,
-                type='error')
-
-    def nextURL(self):
-        return 'applications/' + self.databag_name
-
-
-class AddDatabagView(BrowserView):
-    """
-        View associated to wrap around the AddDatabagForm class
+        View for propertyshelf.plone.hosting to wrap around a form. The
+        attribute form_class must be defined as the class of the form to be
+        created.
     """
 
-    index = ViewPageTemplateFile('templates/add_form.pt')
+    index = ViewPageTemplateFile('templates/form_wrapper.pt')
+    form_class = None
 
     def __init__(self, context, request):
-        super(AddDatabagView, self).__init__(context, request)
-        self.form = AddDatabagForm(context, request)
-
-    def __call__(self):
-        self.form.update()
-        return self.index()
-
-    @property
-    def available(self):
-        chef_tool = queryUtility(IChefTool)
-        if chef_tool is not None:
-            return chef_tool.authenticated
-        return False
-
-
-class AddDatabagItemForm(form.AddForm):
-    """
-        Add form to create a new databag item of type IDatabagItem
-    """
-
-    fields = field.Fields(IDatabagItem)
-    label = _(u'New item for databag ')
-
-    parent = None
-    _valid = True
-
-    @property
-    def valid(self):
-        return self._valid
-
-    def update(self):
-        super(AddDatabagItemForm, self).update()
-        if self._finishedAdd:
-            self.request.response.redirect(self.nextURL())
-
-        if self.parent is None:
-            self._valid = False
-            api.portal.show_message(
-                _(u'Databag item must be added to a specific parent databag'),
-                request=self.request,
-                type='error')
-
-    def createAndAdd(self, data):
-        chef_tool = queryUtility(IChefTool)
-        self.item_name = data.get('name')
-        try:
-            return chef_tool.create_databag_item(self.parent, self.item_name)
-        except ChefError as e:
-            api.portal.show_message(
-                e.message,
-                request=self.request,
-                type='error')
-
-    def nextURL(self):
-        return '%s/applications/%s/%s' % (
-            self.context.absolute_url(),
-            self.parent,
-            self.item_name)
-
-    def update_path(self, traverse_subpath):
-        if len(traverse_subpath) == 1:
-            self.parent = traverse_subpath[0]
-            self.label += self.parent
-
-
-class AddDomainItemForm(AddDatabagItemForm):
-    """
-        Form definition for creating a 'domain' type databag item using the
-        schema from IDomainDatabagItem
-    """
-
-    fields = field.Fields(IDomainDatabagItem)
-
-    def createAndAdd(self, data):
-        chef_tool = queryUtility(IChefTool)
-        domain = data.get('domain')
-        if not domain:
+        super(FormWrapperView, self).__init__(context, request)
+        if not self.form_class:
+            raise NotImplementedError
             return
-        subdomain = data.get('subdomain')
-        redirect = data.get('redirect')
-        caching = data.get('caching')
-        data = {}
-        if redirect:
-            data['redirect'] = redirect
-        if caching:
-            data['backend_port'] = 9000
-            data['warmup_cache'] = True
-        else:
-            data['backend_port'] = 8300
-            data['warmup_cache'] = False
-
-        full_domain = domain
-        self.item_name = domain.replace('.', '_')
-        if subdomain:
-            self.item_name = '{0}__{1}'.format(self.item_name, subdomain)
-            full_domain = '{0}.{1}'.format(subdomain, full_domain)
-        data['site'] = self.item_name
-        data['domain'] = full_domain
-        try:
-            return chef_tool.create_databag_item(
-                self.parent,
-                self.item_name,
-                data
-            )
-        except ChefError as e:
-            api.portal.show_message(
-                e.message,
-                request=self.request,
-                type='error')
-
-
-@implementer(IPublishTraverse)
-class AddDatabagItemView(BrowserView):
-    """
-        View to wrap the form for adding a new databag item. Implements
-        IPublishTraverse in order to ensure the item is being added to a
-        databag parent.
-    """
-
-    index = ViewPageTemplateFile('templates/add_form.pt')
-
-    def __init__(self, context, request):
-        super(AddDatabagItemView, self).__init__(context, request)
-        self.traverse_subpath = []
-        self.form = AddDatabagItemForm(context, request)
+        self.form = self.form_class(context, request)
 
     def __call__(self):
         self.update()
@@ -285,6 +113,25 @@ class AddDatabagItemView(BrowserView):
             return chef_tool.authenticated
         return False
 
+    def update(self):
+        if self.available:
+            self.form.update()
+
+
+@implementer(IPublishTraverse)
+class FormWrapperSubpathView(FormWrapperView):
+    """
+        View to wrap a form that requires a traversal subpath. Implements
+        IPublishTraverse and passes the subpath to the form object on update.
+        The attribute form_class must be defined as the class of the form to be
+        created. The form must have a method implemented called update_path to
+        pass it the traverse_subpath.
+    """
+
+    def __init__(self, context, request):
+        super(FormWrapperSubpathView, self).__init__(context, request)
+        self.traverse_subpath = []
+
     def publishTraverse(self, request, name):
         self.traverse_subpath.append(name)
         return self
@@ -295,16 +142,19 @@ class AddDatabagItemView(BrowserView):
             self.form.update()
 
 
-class AddDomainItemView(AddDatabagItemView):
-    """
-        View for the 'domain' specific databag item form
-    """
+class AddDatabagView(FormWrapperView):
+    """ View for adding a databag type object """
+    form_class = AddDatabagForm
 
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-        self.traverse_subpath = []
-        self.form = AddDomainItemForm(context, request)
+
+class AddDatabagItemView(FormWrapperSubpathView):
+    """ View for the adding a generic databag item """
+    form_class = AddDatabagItemForm
+
+
+class AddDomainItemView(FormWrapperSubpathView):
+    """ View for the 'domain' specific databag item form """
+    form_class = AddDomainItemForm
 
 
 class DeleteDatabagView(BrowserView):
@@ -331,6 +181,10 @@ class DeleteDatabagView(BrowserView):
 
 
 class HostingBreadcrumbs(PathBarViewlet):
+    """
+        Viewlet to override the built-in breadcrumb functionality with a custom
+        breadcrumb that is based of the traverse_subpath
+    """
     render = ViewPageTemplateFile("templates/path_bar.pt")
 
     def update(self):
