@@ -16,7 +16,7 @@ from plone import api
 from plone.app.layout.viewlets.common import PathBarViewlet
 
 # local imports
-from .interfaces import IDatabag, IDatabagItem
+from .interfaces import IDatabag, IDatabagItem, IDomainDatabagItem
 from propertyshelf.plone.hosting.interfaces import IChefTool
 from propertyshelf.plone.hosting.i18n import _
 
@@ -38,7 +38,7 @@ class DatabagViewForm(form.Form):
         if len(self.traverse_subpath) == 0:
             add_url = self.context.absolute_url() + '/create-databag'
         elif len(self.traverse_subpath) == 1:
-            add_url = '%s/create-item/%s' % (
+            add_url = '%s/create-domain/%s' % (
                 self.context.absolute_url(),
                 self.traverse_subpath[0])
         self.request.response.redirect(add_url)
@@ -205,6 +205,50 @@ class AddDatabagItemForm(form.AddForm):
             self.label += self.parent
 
 
+class AddDomainItemForm(AddDatabagItemForm):
+    """
+        Form definition for creating a 'domain' type databag item using the
+        schema from IDomainDatabagItem
+    """
+
+    fields = field.Fields(IDomainDatabagItem)
+
+    def createAndAdd(self, data):
+        chef_tool = queryUtility(IChefTool)
+        domain = data.get('domain')
+        if not domain:
+            return
+        subdomain = data.get('subdomain')
+        redirect = data.get('redirect')
+        caching = data.get('caching')
+        data = {}
+        if redirect:
+            data['redirect'] = redirect
+        if caching:
+            data['backend_port'] = 9000
+            data['warmup_cache'] = True
+        else:
+            data['backend_port'] = 8300
+            data['warmup_cache'] = False
+
+        self.item_name = domain.replace('.', '_')
+        if subdomain:
+            self.item_name = '{0}__{1}'.format(self.item_name, subdomain)
+        data['site'] = self.item_name
+        
+        try:
+            return chef_tool.create_databag_item(
+                self.parent,
+                self.item_name,
+                data
+            )
+        except ChefError as e:
+            api.portal.show_message(
+                e.message,
+                request=self.request,
+                type='error')
+
+
 @implementer(IPublishTraverse)
 class AddDatabagItemView(BrowserView):
     """
@@ -239,6 +283,18 @@ class AddDatabagItemView(BrowserView):
         if self.available:
             self.form.update_path(self.traverse_subpath)
             self.form.update()
+
+
+class AddDomainItemView(AddDatabagItemView):
+    """
+        View for the 'domain' specific databag item form
+    """
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.traverse_subpath = []
+        self.form = AddDomainItemForm(context, request)
 
 
 class DeleteDatabagView(BrowserView):

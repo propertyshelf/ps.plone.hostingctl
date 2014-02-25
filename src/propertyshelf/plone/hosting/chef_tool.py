@@ -15,7 +15,7 @@ from .interfaces import IChefTool
 from .views.interfaces import IHostingSettings
 
 
-def transform_domain(val):
+def to_display_domain(val):
     """
         Converts 'example_com__subdomain' into 'subdomain.example.com'
     """
@@ -141,7 +141,7 @@ class ChefTool(object):
         if not bag.exists:
             return None
 
-        return dict((key, transform_domain(key)) for key in sorted(bag.keys()))
+        return dict((key, to_display_domain(key)) for key in sorted(bag.keys()))
 
     def get_data_from_item(self, bag_name, item_name):
         if not self.authenticated:
@@ -161,12 +161,12 @@ class ChefTool(object):
         bag_name = self._bag_adapter.revert(bag_name)
         return DataBag.create(bag_name, api=self._api)
 
-    def create_databag_item(self, bag_name, item_id):
+    def create_databag_item(self, bag_name, item_id, data={}):
         if not self.authenticated:
             return
 
         bag_name = self._bag_adapter.revert(bag_name)
-        return DataBagItem.create(bag_name, item_id, api=self._api)
+        return DataBagItem.create(bag_name, item_id, api=self._api, **data)
 
     def remove(self, bag_name, item_name=None):
         if not self.authenticated:

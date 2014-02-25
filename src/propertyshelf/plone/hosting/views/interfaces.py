@@ -60,10 +60,36 @@ class IDatabag(form.Schema):
 
 class IDatabagItem(form.Schema):
     """
-        Schema interface for the basic databag type
+        Schema interface for the basic databag type item
     """
 
     name = schema.TextLine(
         title=_(u'Name'),
         required=True
+    )
+
+
+class IDomainDatabagItem(form.Schema):
+    """
+        Schema interface for the 'domain' type databag item
+    """
+
+    domain = schema.TextLine(
+        title=_(u'Domain'),
+        required=True
+    )
+
+    subdomain = schema.TextLine(
+        title=_(u'Subdomain'),
+        required=False
+    )
+
+    redirect = schema.TextLine(
+        title=_(u'Redirect'),
+        required=False
+    )
+
+    caching = schema.Bool(
+        title=_(u'Caching enabled'),
+        required=False
     )

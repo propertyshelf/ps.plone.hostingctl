@@ -43,6 +43,14 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <browser:page
+        name="create-domain"
+        class=".views.AddDomainItemView"
+        layer=".interfaces.IHostingSpecific"
+        permission="cmf.ManagePortal"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        />
+
     <!--    Delete views   -->
     <!-- ================= -->
     <browser:page
