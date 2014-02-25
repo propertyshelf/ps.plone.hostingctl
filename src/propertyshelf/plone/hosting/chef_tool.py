@@ -97,7 +97,7 @@ class ChefTool(object):
         )
         self._initialized = True
 
-    def setup(self, node_name, chef_server_url, client_key, prefix=u''):
+    def setup(self, node_name, chef_server_url, client_key, prefix):
         self.clear_settings()
 
         # must at least check for black client_key because PyChef crashes
