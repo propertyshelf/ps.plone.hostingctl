@@ -13,13 +13,7 @@ from plone.registry.interfaces import IRegistry
 # local imports
 from .interfaces import IChefTool
 from .views.interfaces import IHostingSettings
-
-
-def to_display_domain(val):
-    """
-        Converts 'example_com__subdomain' into 'subdomain.example.com'
-    """
-    return '.'.join(reversed(val.split('__'))).replace('_', '.')
+from propertyshelf.plone.hosting.utils import to_display_domain
 
 
 class PrefixFilter(object):

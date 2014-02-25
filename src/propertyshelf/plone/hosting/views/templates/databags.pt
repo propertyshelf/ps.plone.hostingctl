@@ -6,8 +6,7 @@
       metal:use-macro="context/main_template/macros/master"
       lang="en">
 
-  <metal:content-core fill-slot="content-core">
-    <metal:content-core define-macro="content-core">
+  <metal:content-core fill-slot="main">
 
 
       <tal:condition condition="not: view/available">
@@ -28,7 +27,7 @@
         <div tal:define="databags view/list_databags | nothing"
           tal:condition="databags">
 
-          <h3>Databags</h3>
+          <h1 class="documentFirstHeading">Applications</h1>
 
           <table class="listing" summary="Databag List" id="databag-list">
             <thead>
@@ -64,7 +63,7 @@
         <div tal:define="items view/databag_items | nothing"
              tal:condition="items">
 
-          <h3>Databag Items</h3>
+          <h1 class="documentFirstHeading">Application <span tal:content="view/label">app1</span></h1>
 
           <table class="listing" summary="Databag Items" id="databag-items" 
                  tal:define="bag view/get_databag_name">
@@ -102,6 +101,8 @@
         <!-- =========================== -->  
         <div tal:define="data_list view/databag_item_details | nothing"
              tal:condition="data_list">
+
+          <h1 class="documentFirstHeading">Item <span tal:content="view/label">item1</span></h1>
           <table class="listing" summary="Databag Items" id="databag-items">
 
             <thead>
@@ -146,6 +147,5 @@
 
       </tal:condition>
 
-    </metal:content-core>
   </metal:content-core>
 </html>

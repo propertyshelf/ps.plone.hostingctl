@@ -17,6 +17,7 @@ from plone.app.layout.viewlets.common import PathBarViewlet
 
 # local imports
 from .interfaces import IDatabag, IDatabagItem, IDomainDatabagItem
+from propertyshelf.plone.hosting.utils import to_display_domain
 from propertyshelf.plone.hosting.interfaces import IChefTool
 from propertyshelf.plone.hosting.i18n import _
 
@@ -54,6 +55,7 @@ class DatabagView(BrowserView):
     """
 
     index = ViewPageTemplateFile("templates/databags.pt")
+    _label = u''
 
     def __init__(self, context, request):
         self.context = context
@@ -79,6 +81,10 @@ class DatabagView(BrowserView):
         if self.tool is not None:
             return self.tool.authenticated
 
+    @property
+    def label(self):
+        return self._label
+
     def list_databags(self):
         if len(self.traverse_subpath) == 0:
             return self.tool.get_databags()
@@ -86,12 +92,14 @@ class DatabagView(BrowserView):
     def databag_items(self):
         if len(self.traverse_subpath) == 1:
             databag = self.traverse_subpath[0]
+            self._label = databag
             return self.tool.get_databag_items(databag)
 
     def databag_item_details(self):
         if len(self.traverse_subpath) == 2:
             databag = self.traverse_subpath[0]
             item = self.traverse_subpath[1]
+            self._label = to_display_domain(item)
             return self.tool.get_data_from_item(databag, item)
 
     def get_databag_name(self):
