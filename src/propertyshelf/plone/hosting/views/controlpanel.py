@@ -52,10 +52,11 @@ class HostingSettingsEditForm(RegistryEditForm):
         node_name = data.get('node_name')
         chef_server_url = data.get('chef_server_url')
         client_key = data.get('client_key')
+        prefix = data.get('prefix_filter')
 
         chef_tool = queryUtility(IChefTool)
         if chef_tool is not None:
-            chef_tool.setup(node_name, chef_server_url, client_key)
+            chef_tool.setup(node_name, chef_server_url, client_key, prefix)
             if chef_tool.authenticated:
                 api.portal.show_message(
                     _(u'Chef API authentication: SUCCESS'),
