@@ -75,19 +75,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="item items"
-                  tal:attributes="id item">
+              <tr tal:repeat="key items/keys"
+                  tal:attributes="id key">
                 <td>
                   <a href="#"
-                     tal:attributes="href string:${request/getURL}/${item}"
-                     tal:content="item">Item name</a>
+                     tal:attributes="href string:${request/getURL}/${key}"
+                     tal:content="items/?key">Item name</a>
                 </td>
                 <td>
                   <a href="#"
                      onclick="return confirm('Are you sure?')"
                      tal:define="msg string:Are you sure you want to delete this item?"
                      tal:attributes=
-                        "href string:remove?item_name=${item}&amp;bag_name=${bag};
+                        "href string:remove?item_name=${key}&amp;bag_name=${bag};
                          onclick string:return confirm('${msg}')">Delete</a>
                 </td>
               </tr>

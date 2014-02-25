@@ -27,7 +27,10 @@ class IChefTool(Interface):
         """ Return a list of all databags of this authenticated instance """
 
     def get_databag_items(name):
-        """ Return a list of all databag items for the given databag name """
+        """
+            Return a dictionary of (key: display_name) values for all databag
+            items for the given databag name
+        """
 
     def get_data_from_item(bag, item):
         """

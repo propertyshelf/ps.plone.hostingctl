@@ -15,7 +15,14 @@ from .interfaces import IChefTool
 from .views.interfaces import IHostingSettings
 
 
-class NameAdapter(object):
+def transform_domain(val):
+    """
+        Converts 'example_com__subdomain' into 'subdomain.example.com'
+    """
+    return '.'.join(reversed(val.split('__'))).replace('_', '.')
+
+
+class PrefixFilter(object):
     """
         This adapter works with strings or lists of strings. With a given
         prefix, all strings are filtered to only display those which begin with
@@ -111,7 +118,7 @@ class ChefTool(object):
 
         self._authenticated = True
         self._api = chef_api
-        self._bag_adapter = NameAdapter(prefix)
+        self._bag_adapter = PrefixFilter(prefix)
 
     def clear_settings(self):
         self._authenticated = False
@@ -134,7 +141,7 @@ class ChefTool(object):
         if not bag.exists:
             return None
 
-        return sorted(bag.keys())
+        return dict((key, transform_domain(key)) for key in sorted(bag.keys()))
 
     def get_data_from_item(self, bag_name, item_name):
         if not self.authenticated:
