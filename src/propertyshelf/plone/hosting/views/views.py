@@ -231,11 +231,13 @@ class AddDomainItemForm(AddDatabagItemForm):
             data['backend_port'] = 8300
             data['warmup_cache'] = False
 
+        full_domain = domain
         self.item_name = domain.replace('.', '_')
         if subdomain:
             self.item_name = '{0}__{1}'.format(self.item_name, subdomain)
+            full_domain = '{0}.{1}'.format(subdomain, full_domain)
         data['site'] = self.item_name
-        
+        data['domain'] = full_domain
         try:
             return chef_tool.create_databag_item(
                 self.parent,
