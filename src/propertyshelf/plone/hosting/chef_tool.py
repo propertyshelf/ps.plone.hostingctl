@@ -152,7 +152,10 @@ class ChefTool(object):
         if not item.raw_data:
             return None
 
-        return item.raw_data
+        return [
+            (key, item.raw_data[key])
+            for key in sorted(item.raw_data.keys())
+        ]
 
     def create_databag(self, bag_name):
         if not self.authenticated:
