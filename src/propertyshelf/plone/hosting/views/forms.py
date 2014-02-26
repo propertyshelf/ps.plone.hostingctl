@@ -186,7 +186,7 @@ class EditDomainItemForm(form.Form):
                 request=self.request,
                 type='info')
             if self.item_name != changes.get('id'):
-                url = '%s/edit-item/%s/%s' % (
+                url = '%s/edit-domain/%s/%s' % (
                     self.context.absolute_url(),
                     self.parent,
                     changes.get('id'))
@@ -196,3 +196,13 @@ class EditDomainItemForm(form.Form):
                 self.noChangesMessage,
                 request=self.request,
                 type='warn')
+
+    @button.buttonAndHandler(_('Cancel'), name='cancel')
+    def handleCancel(self, action):
+        data, errors = self.extractData()
+        url = '%s/applications/%s/%s' % (
+            self.context.absolute_url(),
+            self.parent,
+            self.item_name
+        )
+        self.request.response.redirect(url)
