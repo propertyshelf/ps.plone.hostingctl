@@ -13,7 +13,7 @@ from zope.component import queryUtility
 from plone import api
 
 # local imports
-from .interfaces import IDatabag, IDatabagItem, IDomainDatabagItem
+from .interfaces import IDomainDatabagItem
 from propertyshelf.plone.hosting.i18n import _
 from propertyshelf.plone.hosting.interfaces import IChefTool
 from propertyshelf.plone.hosting import utils
@@ -29,58 +29,40 @@ class MainViewForm(form.Form):
     def update_path(self, traverse_subpath):
         self.traverse_subpath = traverse_subpath
 
-    @button.buttonAndHandler(_(u'Create'), name='create')
+    @button.buttonAndHandler(
+        _(u'Create'),
+        name='create',
+        condition=lambda form: len(form.traverse_subpath) == 1
+    )
     def handle_create(self, action):
         data, errors = self.extractData()
-        add_url = ""
-        if len(self.traverse_subpath) == 0:
-            add_url = self.context.absolute_url() + '/create-databag'
-        elif len(self.traverse_subpath) == 1:
-            add_url = '%s/create-domain/%s' % (
-                self.context.absolute_url(),
-                self.traverse_subpath[0])
+        add_url = '%s/create-domain/%s' % (
+            self.context.absolute_url(),
+            self.traverse_subpath[0])
         self.request.response.redirect(add_url)
 
+    @button.buttonAndHandler(
+        _(u'Edit'),
+        name='edit',
+        condition=lambda form: len(form.traverse_subpath) == 2
+    )
+    def handle_edit(self, action):
+        data, errors = self.extractData()
+        url = '%s/edit-domain/%s/%s' % (
+            self.context.absolute_url(),
+            self.traverse_subpath[0],
+            self.traverse_subpath[1])
+        self.request.response.redirect(url)
 
-class AddDatabagForm(form.AddForm):
+
+class AddDomainItemForm(form.AddForm):
     """
-        Add form to create a new databag of type IDatabag
-    """
-
-    fields = field.Fields(IDatabag)
-    label = _(u'Add Databag')
-    
-    @property
-    def valid(self):
-        return True
-
-    def update(self):
-        super(AddDatabagForm, self).update()
-        if self._finishedAdd:
-            self.request.response.redirect(self.nextURL())
-
-    def createAndAdd(self, data):
-        chef_tool = queryUtility(IChefTool)
-        self.databag_name = data.get('name')
-        try:
-            return chef_tool.create_databag(self.databag_name)
-        except ChefError as e:
-            api.portal.show_message(
-                e.message,
-                request=self.request,
-                type='error')
-
-    def nextURL(self):
-        return 'applications/' + self.databag_name
-
-
-class AddDatabagItemForm(form.AddForm):
-    """
-        Add form to create a new databag item of type IDatabagItem
+        Form definition for creating a 'domain' type databag item using the
+        schema from IDomainDatabagItem
     """
 
-    fields = field.Fields(IDatabagItem)
-    label = _(u'New item for databag ')
+    fields = field.Fields(IDomainDatabagItem)
+    label = _(u'New domain for application ')
 
     parent = None
     _valid = True
@@ -90,7 +72,7 @@ class AddDatabagItemForm(form.AddForm):
         return self._valid
 
     def update(self):
-        super(AddDatabagItemForm, self).update()
+        super(AddDomainItemForm, self).update()
         if self._finishedAdd:
             self.request.response.redirect(self.nextURL())
 
@@ -100,37 +82,6 @@ class AddDatabagItemForm(form.AddForm):
                 _(u'Databag item must be added to a specific parent databag'),
                 request=self.request,
                 type='error')
-
-    def createAndAdd(self, data):
-        chef_tool = queryUtility(IChefTool)
-        self.item_name = data.get('name')
-        try:
-            return chef_tool.create_databag_item(self.parent, self.item_name)
-        except ChefError as e:
-            api.portal.show_message(
-                e.message,
-                request=self.request,
-                type='error')
-
-    def nextURL(self):
-        return '%s/applications/%s/%s' % (
-            self.context.absolute_url(),
-            self.parent,
-            self.item_name)
-
-    def update_path(self, traverse_subpath):
-        if len(traverse_subpath) == 1:
-            self.parent = traverse_subpath[0]
-            self.label += self.parent
-
-
-class AddDomainItemForm(AddDatabagItemForm):
-    """
-        Form definition for creating a 'domain' type databag item using the
-        schema from IDomainDatabagItem
-    """
-
-    fields = field.Fields(IDomainDatabagItem)
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
@@ -151,6 +102,17 @@ class AddDomainItemForm(AddDatabagItemForm):
                 e.message,
                 request=self.request,
                 type='error')
+
+    def nextURL(self):
+        return '%s/applications/%s/%s' % (
+            self.context.absolute_url(),
+            self.parent,
+            self.item_name)
+
+    def update_path(self, traverse_subpath):
+        if len(traverse_subpath) == 1:
+            self.parent = traverse_subpath[0]
+            self.label += self.parent
 
 
 class EditDomainItemForm(form.Form):

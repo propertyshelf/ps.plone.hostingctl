@@ -28,22 +28,6 @@
     <!--    Create views   -->
     <!-- ================= -->
     <browser:page
-        name="create-databag"
-        class=".views.AddDatabagView"
-        layer=".interfaces.IHostingSpecific"
-        permission="cmf.ManagePortal"
-        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-        />
-
-    <browser:page
-        name="create-item"
-        class=".views.AddDatabagItemView"
-        layer=".interfaces.IHostingSpecific"
-        permission="cmf.ManagePortal"
-        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
-        />
-
-    <browser:page
         name="create-domain"
         class=".views.AddDomainItemView"
         layer=".interfaces.IHostingSpecific"
@@ -54,7 +38,7 @@
     <!--    Edit views     -->
     <!-- ================= -->
     <browser:page
-        name="edit-item"
+        name="edit-domain"
         class=".views.EditDomainItemView"
         layer=".interfaces.IHostingSpecific"
         permission="cmf.ManagePortal"

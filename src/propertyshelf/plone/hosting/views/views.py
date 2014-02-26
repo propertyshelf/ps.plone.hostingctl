@@ -14,8 +14,6 @@ from plone.app.layout.viewlets.common import PathBarViewlet
 # local imports
 from .forms import (
     MainViewForm,
-    AddDatabagForm,
-    AddDatabagItemForm,
     AddDomainItemForm,
     EditDomainItemForm
 )
@@ -43,11 +41,8 @@ class DatabagView(BrowserView):
         self.tool = queryUtility(IChefTool)
 
     def __call__(self):
-        if len(self.traverse_subpath) > 1:
-            self.form = None
-        else:
-            self.form.update_path(self.traverse_subpath)
-            self.form.update()
+        self.form.update_path(self.traverse_subpath)
+        self.form.update()
         return self.index()
 
     def publishTraverse(self, request, name):
@@ -141,16 +136,6 @@ class FormWrapperSubpathView(FormWrapperView):
         if self.available:
             self.form.update_path(self.traverse_subpath)
             self.form.update()
-
-
-class AddDatabagView(FormWrapperView):
-    """ View for adding a databag type object """
-    form_class = AddDatabagForm
-
-
-class AddDatabagItemView(FormWrapperSubpathView):
-    """ View for the adding a generic databag item """
-    form_class = AddDatabagItemForm
 
 
 class AddDomainItemView(FormWrapperSubpathView):
