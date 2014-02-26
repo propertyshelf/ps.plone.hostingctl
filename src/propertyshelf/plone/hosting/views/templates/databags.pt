@@ -84,6 +84,8 @@
                   </td>
                   <td>
                     <a href="#"
+                       tal:attributes="href string:edit-domain/${bag}/${key}">Edit</a> | 
+                    <a href="#"
                        onclick="return confirm('Are you sure?')"
                        tal:define="msg string:Are you sure you want to delete this item?"
                        tal:attributes=
