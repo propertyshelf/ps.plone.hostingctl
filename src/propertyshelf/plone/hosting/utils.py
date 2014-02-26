@@ -9,8 +9,13 @@ def to_display_domain(val):
     """
     return '.'.join(reversed(val.split('__'))).replace('_', '.')
 
-    
+
 def prepare_data(data):
+    """
+        Takes a dictionary with required entry 'domain' and optional entry
+        'subdomain' and transforms the result to have the correct 'domain' and
+        'id' entries
+    """
     domain = data.get('domain')
     full_domain = domain
     item_id = domain.replace('.', '_')
