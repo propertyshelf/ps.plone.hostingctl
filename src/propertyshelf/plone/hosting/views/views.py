@@ -16,7 +16,8 @@ from .forms import (
     MainViewForm,
     AddDatabagForm,
     AddDatabagItemForm,
-    AddDomainItemForm
+    AddDomainItemForm,
+    EditDomainItemForm
 )
 from propertyshelf.plone.hosting.utils import to_display_domain
 from propertyshelf.plone.hosting.interfaces import IChefTool
@@ -155,6 +156,11 @@ class AddDatabagItemView(FormWrapperSubpathView):
 class AddDomainItemView(FormWrapperSubpathView):
     """ View for the 'domain' specific databag item form """
     form_class = AddDomainItemForm
+
+
+class EditDomainItemView(FormWrapperSubpathView):
+    """ Edit view for the 'domain' specific databag item form """
+    form_class = EditDomainItemForm
 
 
 class DeleteDatabagView(BrowserView):

@@ -151,6 +151,15 @@ class ChefTool(object):
             for key in sorted(item.raw_data.keys())
         ]
 
+    def get_dict_from_item(self, bag_name, item_name):
+        if not self.authenticated:
+            return {}
+
+        bag_name = self._bag_adapter.revert(bag_name)
+        item = DataBagItem(bag_name, item_name, api=self._api)
+
+        return item.raw_data
+
     def create_databag(self, bag_name):
         if not self.authenticated:
             return
@@ -164,6 +173,23 @@ class ChefTool(object):
 
         bag_name = self._bag_adapter.revert(bag_name)
         return DataBagItem.create(bag_name, item_id, api=self._api, **data)
+
+    def edit_databag_item(self, bag_name, old_id, data):
+        if not self.authenticated:
+            return
+
+        bag_name = self._bag_adapter.revert(bag_name)
+
+        new_id = data.get('id')
+        item = DataBagItem(bag_name, new_id, api=self._api)
+        item.raw_data = data
+        item.save()
+
+        # change in ID -> remove previous item
+        if new_id != old_id:
+            obj = DataBagItem(bag_name, old_id, api=self._api)
+            if obj.exists:
+                obj.delete(api=self._api)
 
     def remove(self, bag_name, item_name=None):
         if not self.authenticated:

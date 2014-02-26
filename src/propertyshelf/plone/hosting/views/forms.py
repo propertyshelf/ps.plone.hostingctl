@@ -16,6 +16,7 @@ from plone import api
 from .interfaces import IDatabag, IDatabagItem, IDomainDatabagItem
 from propertyshelf.plone.hosting.i18n import _
 from propertyshelf.plone.hosting.interfaces import IChefTool
+from propertyshelf.plone.hosting import utils
 
 
 class MainViewForm(form.Form):
@@ -133,29 +134,12 @@ class AddDomainItemForm(AddDatabagItemForm):
 
     def createAndAdd(self, data):
         chef_tool = queryUtility(IChefTool)
-        domain = data.get('domain')
-        if not domain:
-            return
-        subdomain = data.get('subdomain')
-        redirect = data.get('redirect')
-        caching = data.get('caching')
-        data = {}
-        if redirect:
-            data['redirect'] = redirect
-        if caching:
-            data['backend_port'] = 9000
-            data['warmup_cache'] = True
-        else:
-            data['backend_port'] = 8300
-            data['warmup_cache'] = False
+        if not chef_tool:
+            return None
 
-        full_domain = domain
-        self.item_name = domain.replace('.', '_')
-        if subdomain:
-            self.item_name = '{0}__{1}'.format(self.item_name, subdomain)
-            full_domain = '{0}.{1}'.format(subdomain, full_domain)
-        data['site'] = self.item_name
-        data['domain'] = full_domain
+        data = utils.prepare_data(data)
+        self.item_name = data.get('id')
+
         try:
             return chef_tool.create_databag_item(
                 self.parent,
@@ -167,3 +151,86 @@ class AddDomainItemForm(AddDatabagItemForm):
                 e.message,
                 request=self.request,
                 type='error')
+
+
+class EditDomainItemForm(form.Form):
+    """
+        Form for editing an existing databag item of the specific 'domain' type
+    """
+
+    successMessage = _(u'Data successfully updated.')
+    noChangesMessage = _(
+        u'There was a problem while updating this item. No changes made.'
+    )
+
+    fields = field.Fields(IDomainDatabagItem)
+    label = _(u'Edit ')
+    parent = None
+    item_name = None
+    _valid = True
+
+    @property
+    def valid(self):
+        return self._valid
+
+    def update_path(self, traverse_subpath):
+        if len(traverse_subpath) == 2:
+            self.parent = traverse_subpath[0]
+            self.item_name = traverse_subpath[1]
+            self.label += self.item_name
+
+    def getContent(self):
+        if self.parent and self.item_name:
+            chef_tool = queryUtility(IChefTool)
+            if chef_tool:
+                data = chef_tool.get_dict_from_item(self.parent, self.item_name)
+                if data:
+                    item_id = data.get('id')
+                    split_id = item_id.split('__')
+                    if len(split_id) == 2:
+                        data['subdomain'] = split_id[1]
+                    data['domain'] = split_id[0].replace('_', '.')
+                    return data
+
+        self._valid = False
+        api.portal.show_message(
+            _(u'Databag item not found.'),
+            request=self.request,
+            type='error')
+        return {}
+
+    def applyChanges(self, data):
+        content = self.getContent()
+        content.update(data)
+        content = utils.prepare_data(content)
+
+        chef_tool = queryUtility(IChefTool)
+        if chef_tool:
+            chef_tool.edit_databag_item(self.parent, self.item_name, content)
+            return content
+
+        return None
+
+    @button.buttonAndHandler(_('Apply'), name='apply')
+    def handleApply(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        changes = self.applyChanges(data)
+        if changes:
+            api.portal.show_message(
+                self.successMessage,
+                request=self.request,
+                type='info')
+            if self.item_name != changes.get('id'):
+                url = '%s/edit-item/%s/%s' % (
+                    self.context.absolute_url(),
+                    self.parent,
+                    changes.get('id'))
+                self.request.response.redirect(url)
+        else:
+            api.portal.show_message(
+                self.noChangesMessage,
+                request=self.request,
+                type='warn')

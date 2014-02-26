@@ -34,8 +34,14 @@ class IChefTool(Interface):
 
     def get_data_from_item(bag, item):
         """
-            Return the dictionary of attribute-value pairs for the given
-            databag item
+            Return the data of a databag item transformed into a list of tuples
+            in the form of (attribute, value) pairs
+        """
+
+    def get_dict_from_item(bag_name, item_name):
+        """
+            Return the data of a databag item as the raw data of type
+            dictionary
         """
 
     def create_databag(bag_name):
@@ -49,6 +55,16 @@ class IChefTool(Interface):
             Creates a DataBagItem on the Chef server with the given id in the
             given databag. Throws a ChefServerError if the DataBag with that
             name already exists.
+        """
+
+    def edit_databag_item(bag_name, old_id, data):
+        """
+            Edits an existing databag item with the data passed in as a
+            dictionary. The databag item is defined by its parent bag_name and
+            the id found in the dictionary data['id']. The old_id parameter is
+            used to determine if the name (and therefore the id) of the databag
+            item was changed in the edits. If so, a new databag is created with
+            the new id, and the old one is deleted from the server
         """
 
     def remove(bag_name, item_name):

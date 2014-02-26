@@ -51,6 +51,16 @@
         for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
         />
 
+    <!--    Edit views     -->
+    <!-- ================= -->
+    <browser:page
+        name="edit-item"
+        class=".views.EditDomainItemView"
+        layer=".interfaces.IHostingSpecific"
+        permission="cmf.ManagePortal"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        />
+
     <!--    Delete views   -->
     <!-- ================= -->
     <browser:page
