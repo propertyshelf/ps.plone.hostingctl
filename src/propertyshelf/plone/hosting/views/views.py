@@ -8,9 +8,6 @@ from zope.component import queryUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 
-# plone imports
-from plone.app.layout.viewlets.common import PathBarViewlet
-
 # local imports
 from .forms import (
     MainViewForm,
@@ -170,27 +167,3 @@ class DeleteDatabagView(BrowserView):
         if chef_tool:
             chef_tool.remove(bag_name, item_name)
 
-
-class HostingBreadcrumbs(PathBarViewlet):
-    """
-        Viewlet to override the built-in breadcrumb functionality with a custom
-        breadcrumb that is based of the traverse_subpath
-    """
-    render = ViewPageTemplateFile("templates/path_bar.pt")
-
-    def update(self):
-        super(HostingBreadcrumbs, self).update()
-
-        traverse_subpath = getattr(self.view, 'traverse_subpath', [])
-        paths = ['applications'] + traverse_subpath
-        urls = ['/'.join(paths[:i + 1]) for i in range(len(paths))]
-        titles = paths
-        titles[0] = 'Applications'
-        self.breadcrumbs = tuple(
-            {'absolute_url': url, 'Title': title}
-            for (url, title) in zip(urls, titles)
-        )
-
-        if self.view.__name__ == 'create-databag' or \
-           self.view.__name__ == 'create-item':
-            self.breadcrumbs += ({'absolute_url': '', 'Title': ''},)

@@ -57,11 +57,12 @@
 
     <!--    Breadcrumbs    -->
     <!-- ================= -->
-    <browser:viewlet
-        name="propertyshelf.plone.hosting.breadcrumbs"
-        manager="plone.app.layout.viewlets.interfaces.IPortalTop"
-        class=".views.HostingBreadcrumbs"
+    <browser:page
+        allowed_attributes="breadcrumbs"
+        name="breadcrumbs_view"
+        class=".navigation.HostingBreadcrumbs"
         layer=".interfaces.IHostingSpecific"
-        permission="zope2.View"
+        permission="zope.Public"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
     />
 </configure>
