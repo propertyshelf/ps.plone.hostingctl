@@ -1,7 +1,7 @@
 ps.plone.hostingctl
 ===================
 
-Hosting management for `Propertyshelf's`_ shared hosting using
+Hosting management for `Propertyshelf`_'s shared hosting using
 `Chef`_ Data Bags.
 
 
