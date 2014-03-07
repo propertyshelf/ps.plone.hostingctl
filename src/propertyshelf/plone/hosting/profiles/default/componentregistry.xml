@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<componentregistry>
-  <utilities>
-    <utility
-      factory="propertyshelf.plone.hosting.chef_tool.ChefTool"
-      interface="propertyshelf.plone.hosting.interfaces.IChefTool"
-      />
-  </utilities>
-</componentregistry>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<registry>
+    <records interface="ps.plone.hostingctl.views.interfaces.IHostingCtlSettings"
+        remove="True"
+        />
+</registry>

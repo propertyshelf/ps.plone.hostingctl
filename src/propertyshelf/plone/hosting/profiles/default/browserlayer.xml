@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<layers>
-  <layer
-      name="propertyshelf.plone.hosting" 
-      interface="propertyshelf.plone.hosting.views.interfaces.IHostingSpecific"
-      />
-</layers>

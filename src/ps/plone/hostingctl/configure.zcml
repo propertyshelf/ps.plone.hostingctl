@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="ps.plone.hostingctl">
+
+    <five:registerPackage package="." initialize=".initialize" />
+    <include package=".views" />
+  
+    <genericsetup:registerProfile
+        name="default"
+        title="ps.plone.hostingctl"
+        directory="profiles/default"
+        description="Installs the ps.plone.hostingctl package"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+  
+    <genericsetup:registerProfile
+        name="uninstall"
+        title="ps.plone.hostingctl-uninstall"
+        directory="profiles/uninstall"
+        description="Uninstalls the ps.plone.hostingctl package"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+  
+</configure>

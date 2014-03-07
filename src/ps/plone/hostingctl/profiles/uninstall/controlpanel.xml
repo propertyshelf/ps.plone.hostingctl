@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="ps.plone.hostingctl">
+
+    <configlet
+        title="Hosting Management Settings"
+        action_id="hostingctl.settings"
+        appId="ps.plone.hostingctl"
+        remove="True">
+            <permission>Manage portal</permission>
+    </configlet>
+
+</object>

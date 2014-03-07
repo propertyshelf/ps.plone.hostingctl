@@ -1,50 +1,63 @@
+# -*- coding: utf-8 -*-
+"""Setup for ps.plone.hostingctl package."""
+
 from setuptools import setup, find_packages
 
-version = '0.1'
+version = '0.1dev'
+description = 'Hosting management for Propertyshelf\'s shared hosting using ' \
+              'Chef Data Bags.'
+long_description = ('\n'.join([
+    open('README.rst').read(),
+    open('CHANGES.rst').read(),
+]))
 
-long_description = (
-    open('README.md').read()
-    + '\n' +
-    open('CHANGES.txt').read()
-    + '\n')
+install_requires = [
+    'setuptools',
+    'plone.api',
+    'plone.directives.form',
+    'pychef',
+    'zope.app.container',
+]
 
 setup(
-    name='propertyshelf.plone.hosting',
+    name='ps.plone.hostingctl',
     version=version,
-    description="Add-on for Chef interface and the associated data bags.",
+    description=description,
     long_description=long_description,
     # Get more strings from
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Plone",
-        "Operating System :: OS Independent",
+        "Framework :: Plone :: 4.2",
+        "Framework :: Plone :: 4.3",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.6",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 2.7",
     ],
-    keywords='chef',
-    author='Zach Cashero',
-    author_email='zach@propertyshelf.com',
-    url='https://github.com/propertyshelf/propertyshelf.plone.hosting',
-    license='gpl',
-    packages=find_packages('src'),
+    keywords='plone hosting chef',
+    author='Propertyshelf, Inc.',
+    author_email='development@propertyshelf.com',
+    url='https://github.com/propertyshelf/ps.plone.hostingctl',
+    download_url='http://pypi.python.org/pypi/ps.plone.hostingctl',
+    license='GPL',
+    packages=find_packages('src', exclude=['ez_setup']),
     package_dir={'': 'src'},
-    namespace_packages=['propertyshelf', 'propertyshelf.plone'],
+    namespace_packages=['ps', 'ps.plone'],
     include_package_data=True,
     zip_safe=False,
-    install_requires=[
-        'setuptools',
-        'plone.directives.form',
-        'plone.api',
-        'pychef',
-        'zope.app.container',
-        # -*- Extra requirements: -*-
-    ],
-    extras_require={'test': ['plone.app.testing']},
+    extras_require={
+        'test': [
+            'plone.app.testing',
+        ],
+    },
+    install_requires=install_requires,
     entry_points="""
-        # -*- Entry points: -*-
-        [z3c.autoinclude.plugin]
-        target = plone
-        """,
+    # -*- Entry points: -*-
+
+    [z3c.autoinclude.plugin]
+    target = plone
+    """,
 )
